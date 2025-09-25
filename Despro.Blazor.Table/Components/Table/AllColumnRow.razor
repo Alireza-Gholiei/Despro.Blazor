@@ -1,0 +1,8 @@
+﻿@typeparam TableItem
+@inherits AllColumnRowBase<TableItem>
+
+<tr class="all-column-row @CssClass" style="text-align: center;">
+    <td colspan="@(Table.VisibleColumnCount + 1)">
+        @ChildContent
+    </td>
+</tr>

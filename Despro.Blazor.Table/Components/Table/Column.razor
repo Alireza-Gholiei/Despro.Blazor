@@ -1,0 +1,9 @@
+﻿@using Despro.Blazor.Table.TableRepository.Interface.Table
+
+@typeparam Item
+@inherits ColumnBase<Item>
+
+<CascadingValue Value="(IColumn<Item>)this" Name="Column">
+
+
+</CascadingValue>

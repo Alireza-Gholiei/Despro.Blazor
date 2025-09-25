@@ -1,0 +1,13 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+@typeparam TItem
+
+@if (Items != null)
+{
+    <CascadingValue Name="Root" Value="this">
+        <TreeViewNodes Items="Items"
+                       Template="Template"
+                       ChildSelectorAsync="ChildSelectorAsync"
+                       AllowDrop="EnableDragAndDrop" />
+    </CascadingValue>
+}

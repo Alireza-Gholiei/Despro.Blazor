@@ -1,0 +1,14 @@
+﻿@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Base.Validation
+@inherits BaseComponent
+@typeparam TValue
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+    <label class="form-label">@Label</label>
+}
+<InputNumber class="form-control" @bind-Value="CurrentValue" @bind:event="oninput" />
+@if (Validate)
+{
+    <ValidationControl For="(() => CurrentValue)"></ValidationControl>
+}

@@ -1,0 +1,21 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+<HtmlElement Tag="@HtmlTag"
+             class="@ClassNames"
+             type="@InputType"
+             href="@Href"
+             target="@HrefBlank"
+             value="@Text"
+             @onclick="OnClick"
+             role="button"
+             @attributes="@UnmatchedParameters">
+    @if (ChildContent == null)
+    {
+        @Text
+    }
+    else
+    {
+        @ChildContent
+    }
+</HtmlElement>

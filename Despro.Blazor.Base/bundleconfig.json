@@ -1,0 +1,32 @@
+[
+  {
+    "outputFileName": "wwwroot/css/desproblazor-style.min.css",
+    "inputFiles": [
+      "wwwroot/css/desproblazor-style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/fonts/desproblazor-font.min.css",
+    "inputFiles": [
+      "wwwroot/css/fonts/desproblazor-font.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/fonts/desproblazor-font-rtl.min.css",
+    "inputFiles": [
+      "wwwroot/css/fonts/desproblazor-font-rtl.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/desproblazor.min.js",
+    "inputFiles": [
+      "wwwroot/js/desproblazor.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/dropZone.min.js",
+    "inputFiles": [
+      "wwwroot/js/dropZone.js"
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+<HtmlElement Tag="div" 
+             class="@ClassNames"
+             @onclick="OnClick"
+             @attributes="@UnmatchedParameters">
+    @ChildContent
+</HtmlElement>

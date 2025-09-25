@@ -1,0 +1,50 @@
+﻿@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Layout.Components.Avatars
+@using Despro.Blazor.Message.MessageGenerals
+@inherits BaseComponent
+
+<div class="toast show me-1 mb-1" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" data-toggle="toast">
+    @if (Toast.Options.ShowHeader)
+    {
+        <div class="toast-header">
+            <strong class="me-auto">@Toast.Title</strong>
+            <small>@Toast.SubTitle</small>
+            <button type="button" class="ms-2 btn-close" data-dismiss="toast" aria-label="Close" @onclick="() => ToastService.RemoveToastAsync(Toast)">
+            </button>
+        </div>
+    }
+    <div class="toast-body">
+        <CascadingValue Value="this">
+            <div class="row g-2 align-items-center">
+                @if (Toast.Icon == ToastIcon.Success)
+                {
+                    <div class="col-auto">
+                        <Avatar Rounded="AvatarRounded.Default" Size="AvatarSize.Large" Data="img/success-alert.png" />
+                    </div>
+                }
+                else if (Toast.Icon == ToastIcon.Warning)
+                {
+                    <div class="col-auto">
+                        <Avatar Rounded="AvatarRounded.Default" Size="AvatarSize.Large" Data="img/warning-alert.png" />
+                    </div>
+                }
+                else if (Toast.Icon == ToastIcon.Error)
+                {
+                    <div class="col-auto">
+                        <Avatar Rounded="AvatarRounded.Default" Size="AvatarSize.Large" Data="img/error-alert.png" />
+                    </div>
+                }
+                <div class="col">
+                    @Toast.Message
+                </div>
+            </div>
+        </CascadingValue>
+    </div>
+
+    @if (Toast.Options.AutoClose && Toast.Options.ShowProgress)
+    {
+        <div class="progress progress-sm">
+            <div class="progress-bar" style="width: @(_progress)%; -ms-transition:none; -o-transition:none; -webkit-transition:none; transition:none"></div>
+        </div>
+    }
+</div>

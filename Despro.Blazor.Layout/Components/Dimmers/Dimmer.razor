@@ -1,0 +1,35 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+@if (Active)
+{
+    <HtmlElement Tag="div"
+                 class="@ClassNames"
+                 @onclick="OnClick"
+                 @attributes="@UnmatchedParameters">
+        <div class="loader-main">
+            @if (ShowSpinner)
+            {
+                <div class="loader"></div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Text))
+            {
+                <div class="loader-text">
+                    @Text
+                </div>
+            }
+        </div>
+
+        <div class="dimmer-content" style="text-align: center;" @onclick:stopPropagation @onclick:preventDefault>
+            <br />
+            @ChildContent
+            <br />
+        </div>
+    </HtmlElement>
+}
+else
+{
+    @ChildContent
+}
+
+

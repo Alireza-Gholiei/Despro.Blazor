@@ -1,0 +1,56 @@
+﻿@typeparam Item
+@inherits PagerBase<Item>
+
+@if (Table.Items.EntityCount >= 1 && Table.ShowFooter)
+{
+    <div class="text-secondary">
+        @($"نمایش {FirstItemNumber} تا {LastItemNumber} از {Table.Items.EntityCount}")
+    </div>
+    <div style="margin: auto">
+        @if (ShowPageNumber)
+        {
+            <ul class="pagination m-0 ms-auto">
+                @if (Table.Items.CurrentPage > 1)
+                {
+                    <li class="page-item cursor-pointer" @onclick="@(() => Table.FirstPage())">
+                        <a class="page-link">
+                            صحفه اول
+                        </a>
+                    </li>
+                    <li class="page-item cursor-pointer" @onclick="@(() => Table.SetPage(Table.Items.CurrentPage-1))">
+                        <a class="page-link">@(Table.Items.CurrentPage - 1)</a>
+                    </li>
+                }
+
+                <li class="page-item active">
+                    <a class="page-link">@(Table.Items.CurrentPage)</a>
+                </li>
+
+                @if (Table.Items.CurrentPage < TotalPages)
+                {
+                    <li class="page-item cursor-pointer" @onclick="@(() => Table.SetPage(Table.Items.CurrentPage+1))">
+                        <a class="page-link">@(Table.Items.CurrentPage + 1)</a>
+                    </li>
+
+                    <li class="page-item cursor-pointer" @onclick="@(() => Table.LastPage())">
+                        <a class="page-link">
+                            صحفه آخر
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+    <div>
+        <select @onchange="SetPageSize">
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>150</option>
+            <option>200</option>
+            <option>250</option>
+            <option>300</option>
+        </select>
+    </div>
+}

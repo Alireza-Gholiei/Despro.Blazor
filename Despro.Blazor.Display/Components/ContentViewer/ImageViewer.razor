@@ -1,0 +1,9 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+@if (!string.IsNullOrWhiteSpace(Src))
+{
+    <div style="border: 2px solid black;">
+        <img src="@Src" />
+    </div>
+}

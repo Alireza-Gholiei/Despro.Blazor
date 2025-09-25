@@ -1,0 +1,56 @@
+﻿using System.ComponentModel;
+
+namespace Despro.Blazor.Display.Models
+{
+    public enum ImageContentTypes
+    {
+        [Description("image/gif")]
+        gif,
+        [Description("image/x-icon")]
+        ics,
+        [Description("image/ief")]
+        jnlp,
+        [Description("image/jp2")]
+        jp2,
+        [Description("image/jpeg")]
+        jpe,
+        [Description("image/jpeg")]
+        jpeg,
+        [Description("image/jpeg")]
+        jpg,
+        [Description("image/pict")]
+        pic,
+        [Description("image/pict")]
+        pict,
+        [Description("image/png")]
+        png,
+        [Description("image/x-portable-anymap")]
+        pnm,
+        [Description("image/x-macpaint")]
+        pnt,
+        [Description("image/x-macpaint")]
+        pntg,
+        [Description("image/x-portable-pixmap")]
+        qt,
+        [Description("image/x-quicktime")]
+        qti,
+        [Description("image/x-quicktime")]
+        ram,
+        [Description("image/x-cmu-raster")]
+        rdf,
+        [Description("image/x-rgb")]
+        texinfo,
+        [Description("image/tiff")]
+        tif,
+        [Description("image/tiff")]
+        tiff,
+        [Description("image/vnd.wap.wbmp")]
+        wbmp,
+        [Description("image/x-xbitmap")]
+        xbm,
+        [Description("image/x-xpixmap")]
+        xpm,
+        [Description("image/x-xwindowdump")]
+        xwd
+    }
+}

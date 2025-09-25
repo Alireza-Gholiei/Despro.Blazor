@@ -1,0 +1,34 @@
+﻿@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Layout.Components.Icons
+@using Despro.Blazor.Layout.Components.IconsModel
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+
+@inherits BaseComponent
+@implements IAsyncDisposable
+
+<label class="form-label">@Label</label>
+<div class="drop-zone @(_isFile ? "has-preview" : "")">
+    <div class="drop-zone-message">
+        <Icon IconType="MDIcons.Cloud_upload_outline" Color="#a8a7a7" Size="80"></Icon>
+        <div @ref="_dropZoneElement">
+            <p>یک فایل را در اینجا بکشید و رها کنید یا کلیک کنید</p>
+        </div>
+    </div>
+    <InputFile OnChange="@OnChange" @ref="_inputFile" />
+    <button type="button" class="btn drop-zone-clear" @onclick="OnRemoveFile">حذف</button>
+    <div class="drop-zone-preview" style="@(_isFile ? "display: block;":"display: none;")">
+        <span class="drop-zone-render">
+            <img src="@_src">
+        </span>
+        <div class="drop-zone-infos">
+            <div class="drop-zone-infos-inner">
+                <p class="drop-zone-filename">
+                    <span class="file-icon"></span>
+                    <span>@SelectedFile?.Name</span>
+                </p>
+                <p class="drop-zone-infos-message">برای جایگزینی بکشید و رها کنید یا کلیک کنید</p>
+            </div>
+        </div>
+    </div>
+</div>

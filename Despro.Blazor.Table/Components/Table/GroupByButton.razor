@@ -1,0 +1,14 @@
+﻿@using Despro.Blazor.Base.BaseGenerals
+@using Despro.Blazor.Layout.Components.Badges
+@typeparam Item
+@inherits GroupByButtonBase<Item>
+
+@if (Table.Columns.Any(e => e.Groupable))
+{
+    <span class="ms-2">
+        @foreach (var column in Table.Columns.Where(e => e.Groupable))
+        {
+            <Badge class="ms-1" BackgroundColor="@(column.GroupBy ? BaseColor.Primary:BaseColor.Default)" @onclick="@column.GroupByMeAsync">@column.Title</Badge>
+        }
+    </span>
+}
