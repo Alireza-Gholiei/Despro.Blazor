@@ -25,7 +25,6 @@ dotnet add package Despro.Blazor.{PackageName}
 
 ساختار تمیز و قابل توسعه
 
-🇬🇧 English
 Despro.Blazor
 
 Despro.Blazor is a modular Blazor starter framework delivered as a set of NuGet packages.
