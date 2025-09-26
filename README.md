@@ -4,13 +4,9 @@
 
 نصب و شروع سریع
 
-نصب پکیج‌ها (مثال):
+نصب پکیج‌ها:
 
-# اگر پکیج مرکزی منتشر شده:
-```C#
-dotnet add package Despro.Blazor.Form
-```
-# یا نصب هر پکیج جدا (مثال)
+# نصب هر پکیج جدا
 ```C#
 dotnet add package Despro.Blazor.Form
 dotnet add package Despro.Blazor.Layout
@@ -29,8 +25,7 @@ builder.Services.AddDesproBlazorModal();
 builder.Services.AddDesproBlazorMessage();
 builder.Services.AddDesproBlazorTable();
 builder.Services.AddDesproBlazorDisplay();
-```
-(نام دقیق متدها را از فایل DesproBlazor*DependencyInjection.cs داخل هر پکیج چک کنید.) 
+``` 
 
 خلاصهٔ پکیج‌ها
 ```
@@ -48,10 +43,9 @@ Despro.Blazor.Modal — سرویس نمایش مدال/آفلاین (ModalServic
 
 Despro.Blazor.Table — جدول پیشرفته با paging/grouping/sorting/editing و زیرساختی برای data factory و filter service. 
 ```
-
 مثال‌ها و توضیحات برای هر پکیج
 
-1) Despro.Blazor.Base
+# 1) Despro.Blazor.Base
 
 چی انجام می‌دهد: ابزارها و enumها/کلاس‌های کمکی (مثلاً BaseColor برای رنگ‌های استاندارد، ClassBuilder برای ساخت رشته کلاس‌های CSS، DatePersian برای تبدیل تاریخ‌ها و ...) — کاربرد عمومی در همهٔ دیگر پکیج‌ها. (فایل BaseGenerals/BaseColor.cs موجود است.) 
 
@@ -71,7 +65,7 @@ if (isDisabled) cb.Add("disabled");
 string css = cb.Build(); // "btn btn-primary" ...
 ```
 
-2) Despro.Blazor.Layout
+# 2) Despro.Blazor.Layout
 
 چی انجام می‌دهد: کامپوننت‌های ظاهری پایه مثل Button, Card, Dropdown, Avatar و غیره — برای سریع ساختن صفحات با استایل منسجم.
 
@@ -99,7 +93,7 @@ string css = cb.Build(); // "btn btn-primary" ...
 </Card>
 ```
 
-3) Despro.Blazor.Form
+# 3) Despro.Blazor.Form
 
 چی انجام می‌دهد: کنترل‌های فرم پیشرفته (Autocomplete, Datepicker, Select, Typeahead، ورودی‌های شماره و متن و غیره). این پکیج برای فرم‌دهی قابل استفاده و قابل bind شدن است. 
 
@@ -147,7 +141,7 @@ DateTime? birthDate;
 
 (پارامترهای دقیق مثل Format, MinDate, MaxDate معمول است.)
 
-4) Despro.Blazor.Display
+# 4) Despro.Blazor.Display
 
 چی انجام می‌دهد: نمایش انواع محتوا — ImageViewer, PdfViewer, Status (آیکون وضعیت)، TreeView برای نمایش ساختار درختی. 
 
@@ -172,7 +166,7 @@ DateTime? birthDate;
   void OnDrop(ItemDropped args) { /* مدیریت درگ/دراپ */ }
 }
 ```
-5) Despro.Blazor.Message (Toast / Alert)
+# 5) Despro.Blazor.Message (Toast / Alert)
 
 چی انجام می‌دهد: سرویس نمایش پیام‌های موقت (Toast) و Alert‌ها. در repo فایل‌هایی مثل ToastService.cs, IToastService.cs, ToastContainer.razor وجود دارد. 
 
@@ -191,7 +185,7 @@ void Save()
 
 توضیح: معمولاً توست‌ها دارای گزینه‌هایی مثل مدت زمان نمایش، تایپ (success/error/warning) و متن هستند.
 
-6) Despro.Blazor.Modal
+# 6) Despro.Blazor.Modal
 
 چی انجام می‌دهد: سرویس و کامپوننت‌های مدال/دیالوگ (ModalService, IModalService, ModalContainer, DialogModal و Offcanvas). 
 
@@ -220,7 +214,7 @@ async Task OpenConfirm()
 
 (نام متدها/پراپرتی‌ها احتمالی‌اند؛ برای نام دقیق به ModalService.cs و DialogModal.razor.cs مراجعه کن.) 
 
-7) Despro.Blazor.Table
+# 7) Despro.Blazor.Table
 
 چی انجام می‌دهد: جدول پیشرفته با قابلیت‌های grouping, sorting, paging, details row, header tools, row actions — دارای زیرساختی مانند TableFilterService, IDataFactory, IColumn, و کامپوننت‌های Table.razor, TableRow.razor, Pager.razor و غیره. 
 
