@@ -1,245 +1,281 @@
-خلاصه
+# Despro.Blazor
 
-این پروژه یک ساختار آماده (scaffolding) برای ساخت رابط‌های Blazor است که به‌صورت مجموعه پکیج‌های مجزا طراحی شده — یعنی هر لایه/بخش داخل پروژه یک پکیج مستقل است (مثلاً Despro.Blazor.Form, Despro.Blazor.Layout, Despro.Blazor.Modal, Despro.Blazor.Message, Despro.Blazor.Table, Despro.Blazor.Display, Despro.Blazor.Base). این پکیج‌ها هم برای Blazor Server و هم برای Blazor WebAssembly قابل استفاده و آمادهٔ انتشار به‌صورت NuGet هستند.
+Despro.Blazor is a ready-to-use template for rapidly developing Blazor applications that works with both Blazor Server and Blazor WebAssembly.
+The project is organized into independent NuGet packages, so you can add only the parts you need.
+Each package provides practical components and utilities to simplify UI development and shared logic.
 
-نصب و شروع سریع
+# Key Features
 
-نصب پکیج‌ها:
+Supports Blazor Server and Blazor WebAssembly.
 
-# نصب هر پکیج جدا
-```C#
+Modular architecture: each layer is published as an independent NuGet package.
+
+Install only the packages you need via NuGet.
+
+Rich set of ready-made components for building pages and forms quickly.
+
+Easy to extend and customize.
+
+# 📦 Package Structure
+``` mathematica
+Despro.Blazor/
+│
+├─ Base/          → Core helpers and services (Helper, Extension, ServiceBase)
+├─ Display/       → Visual elements for presenting data (labels, icons, viewers, etc.)
+├─ Form/          → Form components (Input, Select, Validation, etc.)
+├─ Layout/        → Page structure, header, sidebar, cards, and layout utilities
+├─ Message/       → Notifications and messages (Toast, Alert, etc.)
+├─ Modal/         → Dialog and modal windows
+└─ Table/         → Dynamic data tables with advanced features
+```
+
+# 🔹 Sample Components by Package
+# 1️⃣ Display
+
+Show various types of content such as images, PDFs, status indicators, or hierarchical data.
+
+``` razor
+<ImageViewer Src="image.jpg" Width="300" />
+<PdfViewer FileUrl="doc.pdf" Height="600" />
+
+<Status Value="Active" />
+<StatusIndicator Status="Success" />
+<TreeView Items="@Categories" />
+```
+
+# 2️⃣ Form
+
+Rich input controls and ready-to-use forms with built-in validation.
+
+``` razor
+<Form OnValidSubmit="HandleSave">
+    <FormInputText Label="Name" @bind-Value="Model.Name" />
+    <Datepicker @bind-Value="Model.BirthDate" />
+    <Select Label="City" Items="@Cities" @bind-Value="Model.City" />
+    <Checkbox Label="I accept the terms" @bind-Value="Model.Accepted" />
+    <Button Text="Submit" Type="Submit" />
+</Form>
+```
+
+
+Other useful controls:
+
+``` mathematica
+Autocomplete
+Typeahead
+DragDrop
+FormInputNumber
+CheckboxTriState
+```
+
+# 3️⃣ Layout
+
+Page layout helpers and common UI elements.
+
+``` razor
+<Row>
+    <RowCol Size="6">
+        <Button Color="Primary" Text="Save" />
+    </RowCol>
+    <RowCol Size="6">
+        <Badge Text="Beta Version" Color="Warning" />
+    </RowCol>
+</Row>
+
+<Avatar Src="user.jpg" Size="Large" />
+```
+
+# 4️⃣ Modal
+
+Interactive dialog windows.
+
+``` razor
+<Modal @bind-Visible="ShowModal" Title="User Info">
+    <p>User details go here.</p>
+</Modal>
+
+<Button Text="Open Dialog" OnClick="@(()=>ShowModal=true)" />
+```
+
+# 5️⃣ Table
+
+Powerful data table with sorting, paging, and filtering.
+
+``` razor
+<DesproTable Items="@UserList" PageSize="10">
+    <Column Field="Name" Title="Name" />
+    <Column Field="Email" Title="Email" />
+</DesproTable>
+```
+
+# 🚀 Quick Start
+
+# 1️⃣ Install the desired package
+
+``` bash
 dotnet add package Despro.Blazor.Form
-dotnet add package Despro.Blazor.Layout
-dotnet add package Despro.Blazor.Modal
-dotnet add package Despro.Blazor.Message
-dotnet add package Despro.Blazor.Table
-dotnet add package Despro.Blazor.Display
-```
-ثبت سرویس‌ها (Dependency Injection)
-
-در Program.cs یا Startup.cs پروژهٔ Blazor خود، سرویس‌‌های مورد نیاز هر پکیج را رجیستر کنید. نمونهٔ کلی:
-
-```C#
-builder.Services.AddDesproBlazorForm();
-builder.Services.AddDesproBlazorModal();
-builder.Services.AddDesproBlazorMessage();
-builder.Services.AddDesproBlazorTable();
-builder.Services.AddDesproBlazorDisplay();
-``` 
-
-خلاصهٔ پکیج‌ها
-```
-Despro.Blazor.Base — کلاس‌ها و کمکی‌های پایه (BaseColor enum, ClassBuilder, DatePersian, EnumHelper و ...). این پکیج ابزارهایی فراهم می‌کند که در همهٔ پکیج‌های دیگر مورد استفاده‌اند (مثلاً enum رنگ‌ها). 
-
-Despro.Blazor.Layout — عناصر UI عمومی (Button, Card, Dropdown, Avatar, Progress, Navbar و ...).
-
-Despro.Blazor.Form — کنترل‌های فرم مثل Autocomplete, Datepicker, Select, Typeahead, ValueInput, Checkbox و... .
-
-Despro.Blazor.Display — نمایش محتوا (ImageViewer, PdfViewer), Status indicators و TreeView.
-
-Despro.Blazor.Message — پیام‌رسانی/Toast و Alert (ToastService / IToastService، کانتینر توست).
-
-Despro.Blazor.Modal — سرویس نمایش مدال/آفلاین (ModalService / IModalService، Offcanvas) و کامپوننت‌های modal.
-
-Despro.Blazor.Table — جدول پیشرفته با paging/grouping/sorting/editing و زیرساختی برای data factory و filter service. 
-```
-مثال‌ها و توضیحات برای هر پکیج
-
-# 1) Despro.Blazor.Base
-
-چی انجام می‌دهد: ابزارها و enumها/کلاس‌های کمکی (مثلاً BaseColor برای رنگ‌های استاندارد، ClassBuilder برای ساخت رشته کلاس‌های CSS، DatePersian برای تبدیل تاریخ‌ها و ...) — کاربرد عمومی در همهٔ دیگر پکیج‌ها. (فایل BaseGenerals/BaseColor.cs موجود است.) 
-
-مثال ۱ — استفاده از Enum رنگ:
-
-```C#
-using Despro.Blazor.Base.BaseGenerals;
-
-BaseColor btnColor = BaseColor.Blue;
 ```
 
-مثال ۲ — ClassBuilder برای ساخت کلاس‌های CSS داینامیک:
-```C#
-var cb = new ClassBuilder("btn");
-if (isPrimary) cb.Add("btn-primary");
-if (isDisabled) cb.Add("disabled");
-string css = cb.Build(); // "btn btn-primary" ...
+# 2️⃣ Register services in Program.cs
+
+``` C#
+builder.Services.AddDesproBlazor();
 ```
 
-# 2) Despro.Blazor.Layout
+# 3️⃣ Use in your Razor files
 
-چی انجام می‌دهد: کامپوننت‌های ظاهری پایه مثل Button, Card, Dropdown, Avatar و غیره — برای سریع ساختن صفحات با استایل منسجم.
-
-مثال ۱ — دکمه ساده:
-```HTML
-@using Despro.Blazor.Layout.Components.Buttons
-
-<Button OnClick="@OnSave" Color="BaseColor.Blue">ذخیره</Button>
-
-@code {
-  void OnSave() { /* عملیات ذخیره */ }
-}
-```
-توضیح: Color می‌تواند از BaseColor استفاده کند. دکمه‌ها معمولاً پارامترهایی مثل Size, Icon, Disabled, Loading دارند.
-
-مثال ۲ — کارت با هدر و بدنه:
-```Html
-@using Despro.Blazor.Layout.Components.Cards
-
-<Card>
-  <CardHeader>اطلاعات کاربر</CardHeader>
-  <CardBody>
-    محتوا اینجا قرار می‌گیرد.
-  </CardBody>
-</Card>
+``` razor
+@using Despro.Blazor.Form.Components
 ```
 
-# 3) Despro.Blazor.Form
+# 🛠 For Developers
 
-چی انجام می‌دهد: کنترل‌های فرم پیشرفته (Autocomplete, Datepicker, Select, Typeahead، ورودی‌های شماره و متن و غیره). این پکیج برای فرم‌دهی قابل استفاده و قابل bind شدن است. 
+The codebase is fully modular: one folder = one NuGet package.
+Each package can be built and published independently.
+The Base folder contains shared extensions and services used across packages.
 
-مثال ۱ — Autocomplete ساده (local data):
-```Html
-@using Despro.Blazor.Form.Components.AutoComplete
 
-<Autocomplete TItem="string"
-              Items="cities"
-              @bind-Value="selectedCity"
-              Placeholder="نام شهر را وارد کنید" />
 
-@code {
-  List<string> cities = new() { "Tehran", "Mashhad", "Isfahan" };
-  string selectedCity;
-}
+# Despro.Blazor
+
+ پروژه Despro.Blazor یک ساختار آماده برای توسعه‌ی سریع اپلیکیشن‌های Blazor است که هم در Blazor Server و هم در Blazor WebAssembly قابل استفاده می‌باشد.
+این پروژه به صورت پکیج‌های مستقل طراحی شده تا بر اساس نیاز خود، هر بخش را به صورت جداگانه به پروژه اضافه کنید (از طریق NuGet Package).
+هر پکیج شامل کامپوننت‌ها و ابزارهای کاربردی است که توسعه رابط کاربری و منطق مشترک را ساده می‌کند.
+
+# ویژگی‌های اصلی
+
+پشتیبانی همزمان از Blazor Server و Blazor WebAssembly
+
+ساختار ماژولار: هر لایه به صورت پکیج مستقل منتشر می‌شود.
+
+قابلیت نصب هر پکیج به صورت جداگانه از طریق NuGet.
+
+مجموعه‌ای از کامپوننت‌های آماده برای ساخت سریع صفحات و فرم‌ها.
+
+امکان توسعه و شخصی‌سازی آسان.
+
+# 📦 ساختار پکیج‌ها
+
+``` mathematica
+Despro.Blazor/
+│
+├─ Base/          → توابع و سرویس‌های پایه (Helper, Extension, ServiceBase)
+├─ Display/       → نمایش داده‌ها و المان‌های تصویری (لیبل، آیکون و ...)
+├─ Form/          → کامپوننت‌های فرم (Input، Select، Validation و ...)
+├─ Layout/        → ساختار صفحه، هدر، سایدبار، کارت و ...
+├─ Message/       → نمایش پیام‌ها (Toast، Alert، Notification)
+├─ Modal/         → دیالوگ‌ها و پنجره‌های مودال
+└─ Table/         → جدول‌های داینامیک با امکانات کامل
+```
+# 🔹 نمونه‌ کامپوننت‌های هر پکیج
+# 1️⃣ Display
+
+نمایش انواع محتوا مثل تصویر، PDF، وضعیت و ساختار درختی.
+
+``` razor
+<ImageViewer Src="image.jpg" Width="300" />
+<PdfViewer FileUrl="doc.pdf" Height="600" />
+
+<Status Value="Active" />
+<StatusIndicator Status="Success" />
+<TreeView Items="@Categories" />
 ```
 
-توضیح: این مثال حالت محلی (client-side) را نشان می‌دهد — کامپوننت معمولاً فهرست ورودی می‌گیرد و با @bind-Value مقدار انتخاب شده را نگه می‌دارد.
+# 2️⃣ Form
 
-مثال ۲ — Autocomplete با provider async (سرور):
-```Html
-<Autocomplete TItem="City"
-              ItemsProvider="LoadCities"
-              @bind-Value="selectedCity"
-              Placeholder="جستجو..." />
+ورودی‌های متنوع و فرم آماده با Validation داخلی.
 
-@code {
-  Task<IEnumerable<City>> LoadCities(string filter, int count)
-  {
-    // درخواست به سرور یا فیلتر داخل حافظه
-  }
-  City selectedCity;
-}
+``` razor
+<Form OnValidSubmit="HandleSave">
+    <FormInputText Label="نام" @bind-Value="Model.Name" />
+    <Datepicker @bind-Value="Model.BirthDate" />
+    <Select Label="شهر" Items="@Cities" @bind-Value="Model.City" />
+    <Checkbox Label="شرایط را می‌پذیرم" @bind-Value="Model.Accepted" />
+    <Button Text="ارسال" Type="Submit" />
+</Form>
 ```
 
-مثال ۳ — Datepicker (مبنایی):
-```Html
-<Datepicker @bind-Value="birthDate" Format="yyyy/MM/dd" />
 
-@code {
-DateTime? birthDate;
-}
+کنترل‌های پرکاربرد:
+
+``` mathematica
+Autocomplete
+
+Typeahead
+
+DragDrop
+
+FormInputNumber
+
+CheckboxTriState
 ```
 
-(پارامترهای دقیق مثل Format, MinDate, MaxDate معمول است.)
+# 3️⃣ Layout
 
-# 4) Despro.Blazor.Display
+چیدمان صفحه و عناصر عمومی.
 
-چی انجام می‌دهد: نمایش انواع محتوا — ImageViewer, PdfViewer, Status (آیکون وضعیت)، TreeView برای نمایش ساختار درختی. 
+``` razor
+<Row>
+    <RowCol Size="6">
+        <Button Color="Primary" Text="ذخیره" />
+    </RowCol>
+    <RowCol Size="6">
+        <Badge Text="نسخه بتا" Color="Warning" />
+    </RowCol>
+</Row>
 
-مثال ۱ — نمایش تصویر:
-```Html
-@using Despro.Blazor.Display.Components.ContentViewer
-
-<ImageViewer Src="https://.../image.jpg" Alt="تصویر محصول" Width="400" />
+<Avatar Src="user.jpg" Size="Large" />
 ```
 
-مثال ۲ — نمایش PDF:
-```Html
-<PdfViewer Src="/files/manual.pdf" Height="700" />
+# 4️⃣ Modal
+
+نمایش دیالوگ‌های تعاملی.
+
+``` razor
+<Modal @bind-Visible="ShowModal" Title="اطلاعات کاربر">
+    <p>جزئیات کاربر در اینجا نمایش داده می‌شود.</p>
+</Modal>
+
+<Button Text="نمایش پنجره" OnClick="@(()=>ShowModal=true)" />
 ```
 
-مثال ۳ — TreeView ساده:
-```Html
-<TreeView Items="nodes" CheckboxMode="CheckboxMode.Multiple" OnItemDropped="OnDrop" />
+# 5️⃣ Table
 
-@code {
-  List<TreeNode> nodes = /* ساخت لیست نُدها */;
-  void OnDrop(ItemDropped args) { /* مدیریت درگ/دراپ */ }
-}
-```
-# 5) Despro.Blazor.Message (Toast / Alert)
+جدول داده با امکانات حرفه‌ای.
 
-چی انجام می‌دهد: سرویس نمایش پیام‌های موقت (Toast) و Alert‌ها. در repo فایل‌هایی مثل ToastService.cs, IToastService.cs, ToastContainer.razor وجود دارد. 
-
-مثال استفاده از سرویس توست (برنامه‌ای):
-```C#
-@inject IToastService ToastService
-
-void Save()
-{
-  // ذخیره انجام شد
-  ToastService.ShowSuccess("ذخیره با موفقیت انجام شد");
-  // یا
-  ToastService.ShowError("خطا در ذخیره");
-}
-```
-
-توضیح: معمولاً توست‌ها دارای گزینه‌هایی مثل مدت زمان نمایش، تایپ (success/error/warning) و متن هستند.
-
-# 6) Despro.Blazor.Modal
-
-چی انجام می‌دهد: سرویس و کامپوننت‌های مدال/دیالوگ (ModalService, IModalService, ModalContainer, DialogModal و Offcanvas). 
-
-مثال ۱ — باز کردن یک دیالوگ برنامه‌ای (نمونهٔ مرسوم):
-```C#
-@inject IModalService ModalService
-
-async Task OpenConfirm()
-{
-  var result = await ModalService.ShowDialogAsync("تأیید", contentParameters: new { Message = "آیا ادامه می‌دهید؟" });
-  if (result.IsConfirmed) { /* کار را ادامه بده */ }
-}
-```
-
-مثال ۲ — استفاده از کامپوننت modal در razor:
-```Html
-<DialogModal @ref="myDialog" Title="جزئیات" Size="ModalSize.Large">
-  <p>محتوای دلخواه</p>
-</DialogModal>
-
-@code {
-  DialogModal myDialog;
-  void Open() => myDialog.Show();
-}
-```
-
-(نام متدها/پراپرتی‌ها احتمالی‌اند؛ برای نام دقیق به ModalService.cs و DialogModal.razor.cs مراجعه کن.) 
-
-# 7) Despro.Blazor.Table
-
-چی انجام می‌دهد: جدول پیشرفته با قابلیت‌های grouping, sorting, paging, details row, header tools, row actions — دارای زیرساختی مانند TableFilterService, IDataFactory, IColumn, و کامپوننت‌های Table.razor, TableRow.razor, Pager.razor و غیره. 
-
-مثال ۱ — جدول ساده با دادهٔ محلی:
-```Html
-@using Despro.Blazor.Table.Components.Table
-
-<Table TItem="User" Items="users" Pageable="true" Sortable="true">
-  <Column Field="@(u => u.Id)" Title="ID" />
-  <Column Field="@(u => u.Name)" Title="نام" />
-  <Column Field="@(u => u.Email)" Title="ایمیل" />
+``` razor
+<Table Items="@UserList" PageSize="10">
+    <Column Field="Name" Title="نام" />
+    <Column Field="Email" Title="ایمیل" />
 </Table>
+```
+		
+# 🚀 شروع سریع
 
-@code {
-  List<User> users = await UserService.GetAll();
-}
+# 1️⃣ نصب پکیج دلخواه
+
+``` bash
+dotnet add package Despro.Blazor.Form
 ```
 
-مثال ۲ — استفاده از IDataFactory برای سرور-ساید paging:
-```C#
-// Table config: provide a data factory that returns paged TableResult<T>
+
+# 2️⃣ ثبت سرویس‌ها در Program.cs
+
+``` csharp
+builder.Services.AddDesproBlazor();
 ```
 
-(این پکیج ساختارهای کمکی برای فیلترینگ و factory دارد؛ برای جزئیات متدها به TableRepository/Service/TableFilterService.cs و TheGridDataFactory.cs مراجعه کنید.) 
 
-Contributing
+# 3️⃣ استفاده در Razor
 
-ساختار پروژه پکیج‌بیس است — برای اضافه کردن یک کامپوننت جدید بهتر است پکیج مرتبط را باز کرده و فایل‌های .razor و .razor.cs را مطابق الگوی موجود بسازید.
+``` razor
+@using Despro.Blazor.Form.Components
+```
+
+# 🛠 توسعه‌دهندگان
+
+کدها به صورت ماژولار طراحی شده‌اند. هر پوشه = یک پکیج NuGet.
+
+می‌توانید هر پکیج را مستقل Build و Publish کنید.
+
+پوشه‌ی Base شامل Extensionها و سرویس‌های مشترک است.
