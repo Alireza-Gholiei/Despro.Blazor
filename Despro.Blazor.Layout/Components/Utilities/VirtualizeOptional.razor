@@ -1,0 +1,17 @@
+﻿@using Despro.Blazor.Base.Components
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@inherits BaseComponent
+@typeparam TItem
+
+@if (Virtualize)
+{
+    <Virtualize Items=Items.ToList() TItem=TItem ChildContent=ChildContent />
+}
+else
+{
+    @foreach (var item in Items)
+    {
+        @ChildContent(item)
+    }
+}
+

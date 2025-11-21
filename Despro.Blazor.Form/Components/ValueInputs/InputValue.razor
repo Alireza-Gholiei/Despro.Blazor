@@ -1,0 +1,253 @@
+﻿@typeparam T
+@inherits Despro.Blazor.Base.Components.BaseComponent
+
+@using System.Globalization
+@using System.Linq.Expressions
+@using Despro.Blazor.Base.Validation
+@using Despro.Blazor.Base.Components
+
+<div class="mb-3 position-relative">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <HtmlElement Tag="label"
+                     class="form-label">
+            @Label
+        </HtmlElement>
+    }
+
+    @if (IsMultiline)
+    {
+        <textarea class="@ClassNames"
+                  placeholder="@Placeholder"
+                  rows="@Rows"
+                  @bind="ValueString"
+                  @bind:event="oninput"
+                  @onfocus="(e) => ShowTooltipFlag = true"
+                  @onfocusout="(e) => ShowTooltipFlag = false"
+                  @onmouseenter="(e) => ShowTooltipFlag = true"
+                  @onmouseleave="(e) => ShowTooltipFlag = false"
+                  @onblur="FormatOnBlur"
+                  @attributes="@UnmatchedParameters"></textarea>
+    }
+    else
+    {
+         <input class="@ClassNames"
+               type="text"
+               placeholder="@Placeholder"
+               @bind="ValueString"
+               @bind:event="oninput"
+               @onblur="FormatOnBlur"
+               disabled="@IsDisable"
+               @onfocus="(e) => ShowTooltipFlag = true"
+               @onfocusout="(e) => ShowTooltipFlag = false"
+               @onmouseenter="(e) => ShowTooltipFlag = true"
+               @onmouseleave="(e) => ShowTooltipFlag = false"
+               @attributes="@UnmatchedParameters" />
+    }
+
+    @if (!string.IsNullOrEmpty(Tooltip) && ShowTooltipFlag)
+    {
+        <div class="tooltip bs-tooltip-top d-block fade show"
+             role="tooltip"
+             style="position:absolute; top:-30px; z-index:20;">
+            <div class="tooltip-inner">@Tooltip</div>
+        </div>
+    }
+
+    @if (ShowValidation && For != null)
+    {
+        <ValidationControlOverride TValue="T"
+                                   For="For"
+                                   FieldName="@Label"
+                                   CssClass="invalid-feedback"
+                                   ErrorMessage="@ErrorMessage" />
+    }
+</div>
+
+@code {
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public string Tooltip { get; set; }
+    [Parameter] public T Value { get; set; }
+    [Parameter] public EventCallback<T> ValueChanged { get; set; }
+    [Parameter] public bool IsMultiline { get; set; }
+    [Parameter] public int Rows { get; set; } = 3;
+
+    [Parameter] public bool IsMoney { get; set; } = false;
+    [Parameter] public bool ShowValidation { get; set; } = true;
+    [Parameter] public int? Precision { get; set; } = null;
+    [Parameter] public Expression<Func<T>> For { get; set; }
+    [Parameter] public string ErrorMessage { get; set; }
+
+    [Parameter] public int? MaxLength { get; set; }
+    [Parameter] public int? MinLength { get; set; }
+    [Parameter] public bool IsDisable { get; set; } = false;
+
+    private bool ShowTooltipFlag { get; set; } = false;
+    private FieldIdentifier _fieldIdentifier;
+
+    protected override void OnInitialized()
+    {
+        if (For != null && EditContext != null)
+            _fieldIdentifier = FieldIdentifier.Create(For);
+
+        if (MaxLength.HasValue) 
+            UnmatchedParameters["maxlength"] = MaxLength.Value;
+        if (MinLength.HasValue) 
+            UnmatchedParameters["minlength"] = MinLength.Value;
+    }
+
+    private string ValueString
+    {
+        get
+        {
+            if (Value == null) return "";
+
+            if (!IsMultiline && IsMoney)
+                return FormatMoney(Value);
+
+            if (Precision.HasValue && IsFloatingPoint)
+                return FormatFloating(Value);
+
+            return Convert.ToString(Value, CultureInfo.InvariantCulture) ?? "";
+        }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                Value = default!;
+
+                ValueChanged.InvokeAsync(Value);
+                NotifyFieldChanged();
+                return;
+            }
+
+            var input = (!IsMultiline && IsMoney) ? value.Replace(",", "") : value;
+
+            if (!TryConvert(input, out var result))
+                return;
+
+            Value = result;
+            ValueChanged.InvokeAsync(Value);
+            NotifyFieldChanged();
+        }
+    }
+
+    private void FormatOnBlur(FocusEventArgs e)
+    {
+        if (Value == null)
+            return;
+
+        try
+        {
+            var input = Convert.ToString(Value, CultureInfo.InvariantCulture) ?? string.Empty;
+
+            if (!TryConvert(input, out var result))
+                return;
+
+            object normalizedValue = result!;
+
+            if (IsFloatingPoint && Precision.HasValue)
+            {
+                var dec = Convert.ToDecimal(result, CultureInfo.InvariantCulture);
+                dec = Math.Round(dec, Precision.Value);
+                normalizedValue = Convert.ChangeType(dec, typeof(T), CultureInfo.InvariantCulture);
+            }
+
+            Value = (T)normalizedValue;
+
+            ValueChanged.InvokeAsync(Value);
+        }
+        catch { }
+        finally
+        {
+            ShowTooltipFlag = false;
+            NotifyFieldChanged();
+        }
+    }
+
+    private void NotifyFieldChanged()
+    {
+        if (EditContext != null && For != null)
+            EditContext.NotifyFieldChanged(_fieldIdentifier);
+    }
+
+    private static bool IsFloatingPoint => typeof(T) == typeof(float)
+                                           || typeof(T) == typeof(float?)
+                                           || typeof(T) == typeof(double)
+                                           || typeof(T) == typeof(double?)
+                                           || typeof(T) == typeof(decimal)
+                                           || typeof(T) == typeof(decimal?);
+
+    private static bool IsNullable => Nullable.GetUnderlyingType(typeof(T)) != null;
+
+    protected override string ClassNames => ClassBuilder
+        .Add("form-control")
+        .AddIf("is-invalid", EditContext?.GetValidationMessages(_fieldIdentifier).Any() ?? false)
+        .AddIf("is-valid", !EditContext?.GetValidationMessages(_fieldIdentifier).Any() ?? false)
+        .ToString();
+
+    private static string FormatMoney(T value)
+    {
+        try
+        {
+            var dec = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
+            return string.Format(CultureInfo.InvariantCulture, "{0:N0}", dec);
+        }
+        catch
+        {
+            return Convert.ToString(value, CultureInfo.InvariantCulture) ?? "";
+        }
+    }
+
+    private string FormatFloating(T value)
+    {
+        return string.Format(CultureInfo.InvariantCulture, $"{{0:F{Precision}}}", value);
+    }
+
+    private static bool TryConvert(string input, out T result)
+    {
+        result = default!;
+        try
+        {
+            var targetType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                if (!IsNullable)
+                    return false;
+                result = default!;
+                return true;
+            }
+
+            if (targetType == typeof(byte) && byte.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var b))
+            { result = (T)(object)b; return true; }
+
+            if (targetType == typeof(short) && short.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var s))
+            { result = (T)(object)s; return true; }
+
+            if (targetType == typeof(int) && int.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var i))
+            { result = (T)(object)i; return true; }
+
+            if (targetType == typeof(long) && long.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var l))
+            { result = (T)(object)l; return true; }
+
+            if (targetType == typeof(float) && float.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var f))
+            { result = (T)(object)f; return true; }
+
+            if (targetType == typeof(double) && double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
+            { result = (T)(object)d; return true; }
+
+            if (targetType == typeof(decimal) && decimal.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var dec))
+            { result = (T)(object)dec; return true; }
+
+            if (targetType == typeof(string))
+            { result = (T)(object)input; return true; }
+        }
+        catch { }
+
+        return false;
+    }
+}

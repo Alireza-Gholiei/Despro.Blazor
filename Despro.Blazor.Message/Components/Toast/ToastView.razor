@@ -1,0 +1,48 @@
+﻿@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Layout.Components.Icons
+@inherits BaseComponent
+
+<div class="toast show me-1 mb-1" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" data-toggle="toast">
+    @if (Toast.Options.ShowHeader)
+    {
+        <div class="toast-header">
+            <strong class="me-auto">@Toast.Title</strong>
+            <small>@Toast.SubTitle</small>
+            @if (Toast.Options.ShowClose)
+            {
+                <button type="button"
+                        class="ms-2 btn-close"
+                        data-dismiss="toast"
+                        aria-label="Close"
+                        @onclick="() => ToastService.RemoveToastAsync(Toast)" />
+            }
+        </div>
+    }
+    <div class="toast-body">
+        <CascadingValue Value="this">
+            <div class="row g-2 align-items-center">
+                <div class="col-auto">
+                    <Icon class="mb-2 icon icon-lg"
+                          TextColor=@Toast.StatusColor
+                          IconType=@Toast.IconType />
+                </div>
+                <div class="col">
+                    @Toast.Message
+                    @if (Toast.Contents != null)
+                    {
+                        <div class="mt-3">
+                            @Toast.Contents
+                        </div>
+                    }
+                </div>
+            </div>
+        </CascadingValue>
+    </div>
+
+    @if (Toast.Options is { AutoClose: true, ShowProgress: true })
+    {
+        <div class="progress progress-sm">
+            <div class="progress-bar" style="width: @(_progress)%; -ms-transition:none; -o-transition:none; -webkit-transition:none; transition:none"></div>
+        </div>
+    }
+</div>

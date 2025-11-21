@@ -1,0 +1,181 @@
+﻿@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Layout.Components.Dropdowns
+@using Despro.Blazor.Layout.Components.Icons
+@using Despro.Blazor.Layout.Components.IconsModel
+@inherits BaseComponent
+@typeparam TValue
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+    <label class="form-label">@Label</label>
+}
+
+@if (Inline)
+{
+    @RenderCalender
+}
+else
+{
+    <Dropdown CloseOnClick="false" @ref="_dropdown">
+        <DropdownTemplate>
+            <DropdownMenu>
+                <div class="m-1">
+                    @RenderCalender
+                </div>
+            </DropdownMenu>
+        </DropdownTemplate>
+        <ChildContent>
+            <div class="input-icon">
+                <input type="text" class="form-control cursor-pointer" value="@(_selectedDate?.ToString(Format))"
+                       placeholder="@Label" readonly="readonly" @onfocusout="Close">
+                <span class="input-icon-addon cursor-pointer">
+                    <Icon class="icon" IconType="@InternalIcons.Calendar" />
+                </span>
+            </div>
+        </ChildContent>
+    </Dropdown>
+}
+
+@code {
+
+    private RenderFragment RenderCalender => __builder =>
+    {
+        @if (!IsDisabled)
+        {
+            @if (DatePicker)
+            {
+                @if (_allYear)
+                {
+                    <div class="datepicker @(!Inline ? "datepicker-dropdown": "")">
+                        <div class="datepicker-month">
+                            <span class="float-start">
+                                <Icon OnClick="SetPreviousYear" class="cursor-pointer" IconType="@InternalIcons.Arrow_right" />
+                            </span>
+                            <span class="float-end">
+                                <Icon OnClick="SetNextYear" class="cursor-pointer" IconType="@InternalIcons.Arrow_left" />
+                            </span>
+                            <div @onclick="SelectDateClick">
+                                <span>
+                                    @GetCurrentMonth()
+                                </span>
+                                <span>
+                                    @GetCurrentYear()
+                                </span>
+                            </div>
+                        </div>
+                        <div class="datepicker-years">
+                            @foreach (var date in GetYears())
+                            {
+                                <span @key="date" @onclick="(() => SetSelectedYear(date))" class="@YearCss(date)">
+                                    @date.ToString("yyyy")
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+                else if (_allMonth)
+                {
+                    <div class="datepicker @(!Inline ? "datepicker-dropdown": "")">
+                        <div class="datepicker-month" @onclick="SelectDateClick">
+                            <span>
+                                @GetCurrentMonth()
+                            </span>
+                            <span>
+                                @GetCurrentYear()
+                            </span>
+                        </div>
+                        <div class="datepicker-mount">
+                            @foreach (var date in GetMounts())
+                            {
+                                <span @key="date" @onclick="(() => SetSelectedMonth(date))" class="@MountCss(date)">
+                                    @date.ToString("MMMM", Culture.DateTimeFormat)
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="datepicker @(!Inline ? "datepicker-dropdown": "")">
+                        <div class="datepicker-month">
+                            <span class="float-start">
+                                <Icon OnClick="SetPreviousMonth" class="cursor-pointer" IconType="@InternalIcons.Arrow_right" />
+                            </span>
+                            <span class="float-end">
+                                <Icon OnClick="SetNextMonth" class="cursor-pointer" IconType="@InternalIcons.Arrow_left" />
+                            </span>
+                            <div @onclick="SelectDateClick">
+                                <span>
+                                    @GetCurrentMonth()
+                                </span>
+                                <span>
+                                    @GetCurrentYear()
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="datepicker-weekdays">
+                            @foreach (var weekday in GetWeekdays())
+                            {
+                                <div @key="weekday">
+                                    @weekday
+                                </div>
+                            }
+                        </div>
+                        <div class="datepicker-days">
+                            @foreach (var date in GetDates())
+                            {
+                                <span @key="date" @onclick="(() => SetSelectedDay(date))" class="@DayCss(date)">
+                                    @date.ToString("dd")
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            if (TimePicker)
+            {
+                <div class="timepicker">
+                    <div class="title">انتخاب ساعت</div>
+                    <div class="chose-all">
+                        <div class="handle">
+                            <div class="cell-4">
+                                <a class="icon-up js-plus-houer" @onclick="SetNextHorse"></a>
+                            </div>
+                            <div class="cell-2"></div>
+                            <div class="cell-4">
+                                <a class="icon-up js-plus-minute" @onclick="SetNextMinutes"></a>
+                            </div>
+                        </div>
+                        <div class="text">
+                            <div class="cell-4">
+                                <input type="text" class="form-control js-hour-show" @bind="@hours" @bind:event="oninput" />
+                            </div>
+                            <div class="cell-2 mt-2">:</div>
+                            <div class="cell-4">
+                                <input type="text" class="form-control js-minute-show" @bind="@minute" @bind:event="oninput" />
+                            </div>
+                        </div>
+                        <div class="handle">
+                            <div class="cell-4">
+                                <a class="icon-down js-minus-houer" @onclick="SetPreviousHorse"></a>
+                            </div>
+                            <div class="cell-2"></div>
+                            <div class="cell-4">
+                                <a class="icon-down js-minus-minute" @onclick="SetPreviousMinutes"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button @onclick="SetTime" type="button" class="btn btn-bitbucket btn-pill btn-sm">ثبت</button>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="title">به دلیل غیرفعال بودن امکان انتخاب تاریخ وجود ندارد</div>
+        }
+    };
+}

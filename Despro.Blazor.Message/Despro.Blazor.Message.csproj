@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Title>Despro Blazor Message</Title>
+		<PackageId>Despro.Blazor.Message</PackageId>
+		<Product>Despro.Blazor.Message</Product>
+		<PackageTags>Despro Blazor Message</PackageTags>
+		<Description>Message Despro Blazor</Description>
+		<Authors>Alireza Gholiei</Authors>
+		<PackageIcon>Framework.png</PackageIcon>
+		<Version>1.1.3</Version>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Framework.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Despro.Blazor.Base\Despro.Blazor.Base.csproj" />
+		<ProjectReference Include="..\Despro.Blazor.Layout\Despro.Blazor.Layout.csproj" />
+		<ProjectReference Include="..\Despro.Blazor.Modal\Despro.Blazor.Modal.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
+</Project>

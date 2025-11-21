@@ -1,0 +1,19 @@
+﻿@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Base.BaseGenerals
+@inherits BaseComponent
+
+<CascadingValue Name="Navbar" Value=this>
+    <HtmlElement Tag="@HtmlTag" class="@ClassNames" @onclick="OnClick"
+                 @attributes="@UnmatchedParameters" 
+                 data-bs-theme="@(Background == NavbarBackground.Dark ? "dark" : "")">
+        <div class="container-fluid">
+            @if (IsNavbarToggler)
+            {
+                <button class="navbar-toggler" type="button" @onclick="ToogleExpand">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            }
+            @ChildContent
+        </div>
+    </HtmlElement>
+</CascadingValue>

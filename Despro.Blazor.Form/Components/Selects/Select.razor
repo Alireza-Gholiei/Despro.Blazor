@@ -1,0 +1,54 @@
+﻿@typeparam TItem
+@typeparam TValue
+@using Despro.Blazor.Layout.Components.IconsModel
+@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Base.Validation
+@inherits Despro.Blazor.Base.Components.BaseComponent
+
+<div class="mb-3 position-relative">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <HtmlElement Tag="label"
+                     class="form-label">
+            @Label
+        </HtmlElement>
+    }
+    <div class="input-group input-group-flat">
+        <select class="@ClassNames" @onchange="OnValueChanged" @attributes="UnmatchedParameters">
+            @if (ItemList.Count == 0)
+            {
+                <option value="null">@ItemListEmptyText</option>
+            }
+            else if (ItemNotInList())
+            {
+                <option value="null" selected="@(SelectedValue == null)">@NoSelectedText</option>
+            }
+            @foreach (var listItem in ItemList)
+            {
+                <option value="@listItem.Id" selected="@IsSelected(listItem.Value)" disabled="@listItem.Disabled">
+                    @listItem.Text
+                </option>
+            }
+        </select>
+
+        @if (Clearable)
+        {
+            <span class="input-group-text">
+                @if (SelectedValue != null)
+                {
+                    <a @onclick="Clear" class="link-secondary cursor-pointer">
+                        <Icon class="icon" IconType="@InternalIcons.X" />
+                    </a>
+                }
+            </span>
+        }
+    </div>
+    @if (ShowValidation && For != null)
+    {
+        <ValidationControlOverride TValue="TValue"
+                                   For="For"
+                                   FieldName="@Label"
+                                   CssClass="invalid-feedback"
+                                   ErrorMessage="@ErrorMessage" />
+    }
+</div>

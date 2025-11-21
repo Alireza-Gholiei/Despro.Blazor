@@ -1,0 +1,212 @@
+﻿@using System.Linq.Expressions
+@using Despro.Blazor.Base.Services
+@using Despro.Blazor.Base.Validation
+
+<div class="mb-3 position-relative"
+     @onclick="() => ShowSuggestions = true"
+     @onsubmit="() => Task.CompletedTask">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="form-label">@Label</label>
+    }
+
+    @if (Tags.Any())
+    {
+        <div class="d-flex flex-wrap gap-1 mb-1">
+            @foreach (var tag in Tags)
+            {
+                <span class="badge badges-list bg-cyan" style="color: aliceblue;">
+                    @tag
+                    <button type="button" class="btn-close btn-close-white btn-sm ms-1" @onclick="() => RemoveTag(tag)"></button>
+                </span>
+            }
+        </div>
+    }
+
+    <input class="form-control @InputCssClass"
+           @ref="chipsInput"
+           type="text"
+           placeholder="@Placeholder"
+           @bind="CurrentInput"
+           @bind:event="oninput"
+           @onkeydown="HandleKeyDown" />
+
+    @if (Suggestions.Any() && ShowSuggestions)
+    {
+        <ul class="list-group position-absolute" style="z-index:1000; max-height:150px; overflow-y:auto;">
+            @for (var i = 0; i < Suggestions.Count; i++)
+            {
+                var suggestion = Suggestions[i];
+                var activeClass = (i == SelectedSuggestionIndex) ? "active" : "";
+                <li class="list-group-item list-group-item-action @activeClass"
+                    @onclick="() => AddTag(suggestion)">
+                    @suggestion
+                </li>
+            }
+        </ul>
+    }
+
+    @if (ShowValidation && For != null)
+    {
+        <ValidationControlOverride TValue="string"
+                                   For="For"
+                                   FieldName="@Label"
+                                   CssClass="invalid-feedback"
+                                   ErrorMessage="@ErrorMessage" />
+    }
+</div>
+
+@code {
+    [Inject] public BaseService BaseService { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public List<string> AutocompleteItems { get; set; } = [];
+
+    [Parameter] public bool ShowValidation { get; set; } = true;
+    [Parameter] public Expression<Func<string>> For { get; set; }
+    [Parameter] public string ErrorMessage { get; set; }
+
+    private ElementReference chipsInput;
+
+    private List<string> Tags { get; set; } = [];
+    private string _currentInput = "";
+    private string CurrentInput
+    {
+        get => _currentInput;
+        set
+        {
+            _currentInput = value;
+            UpdateSuggestions();
+        }
+    }
+
+    private List<string> Suggestions { get; set; } = [];
+    private bool ShowSuggestions { get; set; } = false;
+    private int SelectedSuggestionIndex { get; set; } = -1;
+
+    private FieldIdentifier _fieldIdentifier;
+
+    protected override void OnInitialized()
+    {
+        if (For != null && EditContext != null)
+            _fieldIdentifier = FieldIdentifier.Create(For);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BaseService.PreventDefaultKey(chipsInput, "keydown", ["Enter", "Tab", "ArrowDown", "ArrowUp"]);
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrWhiteSpace(Value))
+        {
+            Tags = Value.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(t => t.Trim())
+                        .ToList();
+        }
+        else
+        {
+            Tags = [];
+        }
+    }
+
+    private async Task AddTag(string tag)
+    {
+        tag = tag.Trim();
+        if (!string.IsNullOrEmpty(tag) && !Tags.Contains(tag))
+            Tags.Add(tag);
+
+        CurrentInput = "";
+        ShowSuggestions = false;
+        SelectedSuggestionIndex = -1;
+        await UpdateValue();
+    }
+
+    private void RemoveTag(string tag)
+    {
+        Tags.Remove(tag);
+        _ = UpdateValue();
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "Enter":
+            case "Tab":
+            case ",":
+                {
+                    if (SelectedSuggestionIndex >= 0)
+                        await AddTag(Suggestions[SelectedSuggestionIndex]);
+                    else if (!string.IsNullOrWhiteSpace(CurrentInput))
+                        await AddTag(CurrentInput);
+                    break;
+                }
+            case "ArrowDown":
+                {
+                    if (Suggestions.Any())
+                        SelectedSuggestionIndex = (SelectedSuggestionIndex + 1) % Suggestions.Count;
+                    break;
+                }
+            case "ArrowUp":
+                {
+                    if (Suggestions.Any())
+                        SelectedSuggestionIndex = (SelectedSuggestionIndex - 1 + Suggestions.Count) % Suggestions.Count;
+                    break;
+                }
+            case "Backspace" when string.IsNullOrEmpty(CurrentInput):
+                {
+                    if (Tags.Any())
+                        Tags.RemoveAt(Tags.Count - 1);
+                    break;
+                }
+        }
+    }
+
+
+    private void UpdateSuggestions()
+    {
+        if (!string.IsNullOrWhiteSpace(CurrentInput))
+        {
+            Suggestions = AutocompleteItems
+                .Where(x => x.Contains(CurrentInput, StringComparison.InvariantCultureIgnoreCase) && !Tags.Contains(x))
+                .ToList();
+            ShowSuggestions = Suggestions.Any();
+            SelectedSuggestionIndex = Suggestions.Any() ? 0 : -1;
+        }
+        else
+        {
+            Suggestions.Clear();
+            ShowSuggestions = false;
+            SelectedSuggestionIndex = -1;
+        }
+    }
+
+    private async Task UpdateValue()
+    {
+        Value = string.Join(",", Tags);
+        await ValueChanged.InvokeAsync(Value);
+
+        if (EditContext != null && For != null)
+            EditContext.NotifyFieldChanged(_fieldIdentifier);
+    }
+
+    private string InputCssClass
+    {
+        get
+        {
+            if (!ShowValidation || EditContext == null || For == null) return "";
+            var hasErrors = EditContext.GetValidationMessages(_fieldIdentifier).Any();
+            return hasErrors ? "is-invalid" : "is-valid";
+        }
+    }
+}

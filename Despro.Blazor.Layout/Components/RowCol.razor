@@ -1,0 +1,11 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+<HtmlElement Tag="div"
+             class="@ClassNames"
+             style="@(Style + (IsCenter ? "text-align: center;" : ""))"
+             @onclick="OnClick"
+             @attributes="@UnmatchedParameters">
+    @ChildContent
+</HtmlElement>
+

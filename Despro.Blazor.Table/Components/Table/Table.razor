@@ -1,0 +1,130 @@
+﻿@using Despro.Blazor.Base.BaseGenerals
+@using Despro.Blazor.Layout.Components.Buttons
+@using Despro.Blazor.Layout.Components.Cards
+@using Despro.Blazor.Layout.Components.Dimmers
+@using Despro.Blazor.Layout.Components.Icons
+@using Despro.Blazor.Layout.Components.IconsModel
+@using Despro.Blazor.Table.TableRepository.Interface.Table
+@typeparam Item
+@inherits TableBase<Item>
+
+<CascadingValue Value="(ITable<Item>) this" Name="Table">
+    <Card>
+        @if (ShowHeader)
+        {
+            <CardHeader>
+                @if (HeaderTemplate != null)
+                {
+                    @HeaderTemplate
+                }
+                @if (TableSearchable)
+                {
+                    <div class="ms-auto text-secondary">
+                        <div class="input-group input-group-flat">
+                            <Button Size="ButtonSize.Small"
+                                    OnClick="() => ShowSearch = !ShowSearch"
+                                    BackgroundColor="BaseColor.Teal"
+                                    Text="جستجو">
+                            </Button>
+                        </div>
+                    </div>
+                }
+
+                <TableHeaderTools TableItem="Item" />
+            </CardHeader>
+        }
+        <div class="the-grid">
+            @if (VisibleColumns.Any())
+            {
+                <div class="div-table-wrapper @GetTableCssClass()">
+                    <div class="div-table-table">
+                        <table @attributes="Attributes" @ref="Table">
+                            @if (ShowTableHeader)
+                            {
+                                <TableHeader TableItem="Item"></TableHeader>
+                            }
+                            <tbody>
+                                @if (ShowSearch)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        @foreach (var i in Columns)
+                                        {
+                                            if (i.Searchable)
+                                            {
+                                                <td>
+                                                    <div class="input-group input-group-flat">
+                                                        <input type="text" class="form-control form-control-sm" placeholder="جستجو @i.Title" @bind="i.SearchText" />
+                                                        <span class="input-group-text">
+                                                            <Icon Size="16" IconType="@InternalIcons.X"
+                                                                  TextColor="BaseColor.Red"
+                                                                  OnClick="@(() => ClearSearch(i))" />
+
+                                                            <Icon Size="16" IconType="@InternalIcons.Search"
+                                                                  TextColor="BaseColor.Blue"
+                                                                  OnClick="@(() => Search(i))" />
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                                @if (ReloadingItems)
+                                {
+                                    <AllColumnRow TableItem="Item">
+                                        <Dimmer Active="true" Text="در حال بارگزاری">
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                        </Dimmer>
+                                    </AllColumnRow>
+                                }
+                                else if (ShowNoItemsLabel && (!TempItems.Any() || !TempItems.Any(x => x.Any())))
+                                {
+                                    <AllColumnRow TableItem="Item">
+                                        <span style="font-size: 1.0rem;">
+                                            لیست خالی است
+                                        </span>
+                                    </AllColumnRow>
+                                }
+                                else
+                                {
+                                    foreach (var group in TempItems)
+                                    {
+                                        foreach (var item in group)
+                                        {
+                                            <TableRow @key="item" Item="item" Table="this"
+                                                      Index="@(group.IndexOf(item) + 1)"
+                                                      PageNumber="Items.CurrentPage"
+                                                      PageSize="Items.Limit" />
+
+                                            if (ShowDetailsRow(item))
+                                            {
+                                                <DetailsRow Item="item" Table="this"></DetailsRow>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            @ChildContent
+
+            @if (Items.EntityCount > 0)
+            {
+                <div class="card-footer d-flex align-items-center">
+                    <Pager Item="Item" />
+                </div>
+            }
+        </div>
+    </Card>
+</CascadingValue>

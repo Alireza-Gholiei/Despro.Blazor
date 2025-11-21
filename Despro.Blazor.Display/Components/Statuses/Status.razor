@@ -1,0 +1,16 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+<HtmlElement Tag="span"
+             class="@ClassNames"
+             @onclick="OnClick"
+             @attributes="@UnmatchedParameters">
+
+    @if (DotType != StatusDotType.None)
+    {
+        <StatusDot Animate="@(DotType == StatusDotType.Animate)" />
+    }
+
+    @ChildContent
+
+</HtmlElement>

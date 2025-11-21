@@ -1,0 +1,59 @@
+﻿@inherits BaseComponent
+@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Layout.Components
+@using Despro.Blazor.Layout.Components.Buttons
+@using Despro.Blazor.Layout.Components.Icons
+
+<div class="py-4 text-center">
+    <div style="justify-items: center;">
+        <Icon class="icon icon-lg mb-2" TextColor=@Options.StatusColor IconType=@Options.IconType />
+    </div>
+
+    <h3 class="font-black">@Options.MainText</h3>
+    <div class="text-secondary">
+        @foreach (var i in textArray)
+        {
+            @i
+            <br />
+        }
+    </div>
+</div>
+
+<div class="modal-footer">
+    <div class="w-100">
+        <Row>
+            @if (!string.IsNullOrWhiteSpace(Options.OkText) && !string.IsNullOrWhiteSpace(Options.CancelText))
+            {
+                <RowCol Sm="6">
+                    <Button class="w-100" BackgroundColor="@Options.StatusColor" @onclick="@Ok">
+                        @Options.OkText
+                    </Button>
+                </RowCol>
+                <RowCol Sm="6">
+                    <Button class="w-100" @onclick="@Cancel">
+                        @Options.CancelText
+                    </Button>
+                </RowCol>
+            }
+            else
+            {
+                @if (!string.IsNullOrWhiteSpace(Options.OkText))
+                {
+                    <RowCol>
+                        <Button class="w-100" BackgroundColor="@Options.StatusColor" @onclick="@Ok">
+                            @Options.OkText
+                        </Button>
+                    </RowCol>
+                }
+                @if (!string.IsNullOrWhiteSpace(Options.CancelText))
+                {
+                    <RowCol>
+                        <Button class="w-100" @onclick="@Cancel">
+                            @Options.CancelText
+                        </Button>
+                    </RowCol>
+                }
+            }
+        </Row>
+    </div>
+</div>

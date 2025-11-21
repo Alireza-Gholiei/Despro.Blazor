@@ -1,0 +1,81 @@
+﻿@using Microsoft.JSInterop
+@using Despro.Blazor.Base.Components
+
+@inject IJSRuntime JSRuntime;
+@implements IAsyncDisposable
+@inherits BaseComponent
+
+<span id="@Id" @attributes="@UnmatchedParameters" @onclick="AddClickOutsideHandler">
+    @ChildContent
+</span>
+
+@code {
+
+    [Parameter] public RegisterStrategy Strategy { get; set; } = RegisterStrategy.OnClick;
+    [Parameter] public ConcurrenceStrategy Concurrence { get; set; } = ConcurrenceStrategy.One;
+    [Parameter] public EventCallback OnClickOutside { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private string Id { get; set; } = Guid.NewGuid().ToString();
+
+    public enum RegisterStrategy
+    {
+        OnClick = 1,
+        OnRender = 2
+    }   
+
+    public enum ConcurrenceStrategy
+    {
+        One = 1,
+        Many = 2
+    }    
+
+    private IJSObjectReference _module;
+    private IJSObjectReference _clickOutsideHandler;
+
+    [JSInvokable]
+    public async Task InvokeClickOutside()
+    {
+        await OnClickOutside.InvokeAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            if (firstRender && Strategy == RegisterStrategy.OnRender)
+            {
+                await JSRuntime.InvokeVoidAsync("DesproBlazor.clickOutsideHandler.addEvent", Id, Concurrence == ConcurrenceStrategy.One, DotNetObjectReference.Create(this));
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("DesproBlazor.clickOutsideHandler.removeEvent", Id);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    private async Task AddClickOutsideHandler()
+    {
+        try
+        {
+            if (Strategy == RegisterStrategy.OnClick)
+            {
+                await JSRuntime.InvokeVoidAsync("DesproBlazor.clickOutsideHandler.addEvent", Id, Concurrence == ConcurrenceStrategy.One, DotNetObjectReference.Create(this));
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+}

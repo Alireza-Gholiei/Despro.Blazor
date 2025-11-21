@@ -1,0 +1,20 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+<div class="@GetWrapperClass()" @onclick:stopPropagation="hasSubMenu">
+
+    <HtmlElement Tag="a"
+                 class="@ClassNames"
+                 @onclick="ItemClicked"
+                 @attributes="@UnmatchedParameters">
+        @ChildContent
+
+        @if (hasSubMenu && subMenuVisible)
+        {
+            <DropdownMenu>
+                @SubMenu
+            </DropdownMenu>
+        }
+
+    </HtmlElement>
+</div>

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Title>Despro Blazor Table</Title>
+		<PackageId>Despro.Blazor.Table</PackageId>
+		<Product>Despro.Blazor.Table</Product>
+		<PackageTags>Despro Blazor Table</PackageTags>
+		<Description>Table Despro Blazor</Description>
+		<Authors>Alireza Gholiei</Authors>
+		<PackageIcon>Framework.png</PackageIcon>
+		<Version>1.1.3</Version>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Framework.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Despro.Blazor.Base\Despro.Blazor.Base.csproj" />
+	  <ProjectReference Include="..\Despro.Blazor.Form\Despro.Blazor.Form.csproj" />
+	  <ProjectReference Include="..\Despro.Blazor.Layout\Despro.Blazor.Layout.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="TableGenerals\QuickTables\" />
+	  <Folder Include="TableRepository\Interface\QuickTables\" />
+	  <Folder Include="TableRepository\Service\QuickTables\" />
+	</ItemGroup>
+
+</Project>

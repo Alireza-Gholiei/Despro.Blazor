@@ -1,0 +1,18 @@
+﻿@using Despro.Blazor.Base.Components
+@inherits BaseComponent
+
+<br />
+<div class="@ClassNames" @attributes="@UnmatchedParameters" @onclick="OnClick">
+    <div class="@BarClassNames" style="width: @Percentage.ToString()%" role="progressbar" aria-valuenow="@Percentage" aria-valuemin="0" aria-valuemax="100">
+    </div>
+</div>
+<div class="row">
+    <div style="text-align-last: center">
+        @if (!string.IsNullOrEmpty(Text))
+        {
+            <br />
+            <span>@Text</span>
+        }
+    </div>
+</div>
+<br />

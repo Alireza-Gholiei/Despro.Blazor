@@ -1,0 +1,42 @@
+﻿@inherits BaseComponent
+@using Despro.Blazor.Base.Components
+@using Despro.Blazor.Base.BaseGenerals
+@using Despro.Blazor.Layout.Components
+@using Despro.Blazor.Layout.Components.Buttons
+@using Despro.Blazor.Layout.Components.Dimmers
+
+@if (!RenderForm)
+{
+    @ChildContent
+}
+else
+{
+    <Dimmer Active="Submited" Text="لطفا منتظر بمانید...">
+        <EditForm EditContext="@EditContext" OnSubmit="HandleValidSubmit" @attributes="UnmatchedParameters" FormName="FormName">
+            <DynamicComponent Type="Validator.Component" @ref="@ValidatorInstance"></DynamicComponent>
+            @if (NotValid)
+            {
+                <ValidationSummary />
+            }
+
+            <br />
+            @ChildContent
+
+            @if (IsSubmitBtn)
+            {
+                <br />
+                <Row>
+                    <RowCol Md="12" Style="text-align: center;">
+                        <Button Type="ButtonType.Submit"
+                                Size="ButtonSize.Default"
+                                IsIcon="true"
+                                BackgroundColor="BaseColor.Primary"
+                                class="mt-1">
+                            @SubmitText
+                        </Button>
+                    </RowCol>
+                </Row>
+            }
+        </EditForm>
+    </Dimmer>
+}

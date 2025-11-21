@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Title>Despro Blazor Modal</Title>
+		<PackageId>Despro.Blazor.Modal</PackageId>
+		<Product>Despro.Blazor.Modal</Product>
+		<PackageTags>Despro Blazor Modal</PackageTags>
+		<Description>Modal Despro Blazor</Description>
+		<Authors>Alireza Gholiei</Authors>
+		<PackageIcon>Framework.png</PackageIcon>
+		<Version>1.1.2</Version>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Framework.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Despro.Blazor.Base\Despro.Blazor.Base.csproj" />
+		<ProjectReference Include="..\Despro.Blazor.Layout\Despro.Blazor.Layout.csproj" />
+	</ItemGroup>
+
+</Project>
