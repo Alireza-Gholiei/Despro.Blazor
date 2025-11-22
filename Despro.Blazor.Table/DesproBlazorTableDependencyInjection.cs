@@ -1,5 +1,4 @@
 ﻿using Despro.Blazor.Layout;
-using Despro.Blazor.Table.TableRepository.Service.Table;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Despro.Blazor.Table

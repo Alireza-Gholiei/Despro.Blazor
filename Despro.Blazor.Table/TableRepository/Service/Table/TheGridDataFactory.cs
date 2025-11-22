@@ -1,11 +1,9 @@
 ﻿using Despro.Blazor.Base.Models;
 using Despro.Blazor.Table.TableGenerals.Table;
 using Despro.Blazor.Table.TableRepository.Interface.Table;
-using Despro.Blazor.Table.TableRepository.Service.Table;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 
-namespace Despro.Blazor.Table.Components.Tables.Components
+namespace Despro.Blazor.Table.TableRepository.Service.Table
 {
     public partial class TheGridDataFactory<Item> : IDataProvider<Item>
     {
@@ -84,8 +82,8 @@ namespace Despro.Blazor.Table.Components.Tables.Components
             }
         }
 
-        [GeneratedRegex("\\d+")]
-        private static partial Regex DigitRegex();
+        //[GeneratedRegex("\\d+")]
+        //private static partial Regex DigitRegex();
 
         private static void NaturalOrderBy<T>(GridData<T> source, Expression<Func<T, object>> selectorExpr, bool desc)
         {

@@ -2,9 +2,9 @@
 using Despro.Blazor.Base.Components;
 using Despro.Blazor.Base.Models;
 using Despro.Blazor.Base.Services;
-using Despro.Blazor.Table.Components.Tables.Components;
 using Despro.Blazor.Table.TableGenerals.Table;
 using Despro.Blazor.Table.TableRepository.Interface.Table;
+using Despro.Blazor.Table.TableRepository.Service.Table;
 using Microsoft.AspNetCore.Components;
 
 namespace Despro.Blazor.Table.Components.Table

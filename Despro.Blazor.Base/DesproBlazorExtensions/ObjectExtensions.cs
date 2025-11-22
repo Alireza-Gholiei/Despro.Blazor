@@ -1,12 +1,8 @@
-﻿using Storebook.View.Components.ArrayExtensions;
+﻿using Despro.Blazor.Base.DesproBlazorExtensions.ArrayExtensions;
 using System.Reflection;
 
-namespace Storebook.View.Components
+namespace Despro.Blazor.Base.DesproBlazorExtensions
 {
-    /// <summary>
-    /// This code is taken from here
-    /// https://github.com/Burtsev-Alexey/net-object-deep-copy
-    /// </summary>
     internal static class ObjectExtensions
     {
         private static readonly MethodInfo CloneMethod = typeof(object).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);

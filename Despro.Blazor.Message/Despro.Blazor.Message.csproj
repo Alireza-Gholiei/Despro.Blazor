@@ -9,15 +9,11 @@
 		<Description>Message Despro Blazor</Description>
 		<Authors>Alireza Gholiei</Authors>
 		<PackageIcon>Framework.png</PackageIcon>
-		<Version>1.1.3</Version>
+		<Version>1.1.4</Version>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<SupportedPlatform Include="browser" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="Framework.png">

@@ -103,7 +103,7 @@ namespace Despro.Blazor.Message.MessageRepository.Services
                 Delay = delaySeconds,
                 ShowHeader = true,
                 ShowProgress = true,
-                
+
             };
 
             _ = AddToastAsync(new ToastModel

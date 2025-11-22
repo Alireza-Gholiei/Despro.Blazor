@@ -9,7 +9,7 @@
 		<Description>Form Despro Blazor</Description>
 		<Authors>Alireza Gholiei</Authors>
 		<PackageIcon>Framework.png</PackageIcon>
-		<Version>1.2.7</Version>
+		<Version>1.2.8</Version>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
