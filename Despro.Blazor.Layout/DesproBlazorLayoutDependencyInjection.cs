@@ -7,7 +7,7 @@ namespace Despro.Blazor.Layout
     {
         public static IServiceCollection AddDesproBlazorLayout(this IServiceCollection services, bool persianInitialize = false)
         {
-            _ = services.AddDesproBlazorBase(persianInitialize);
+            services.AddDesproBlazorBase(persianInitialize);
 
             return services;
         }
