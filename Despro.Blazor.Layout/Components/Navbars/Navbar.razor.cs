@@ -8,22 +8,22 @@ namespace Despro.Blazor.Layout.Components.Navbars;
 
 public partial class Navbar : BaseComponent, IDisposable
 {
-    [Inject] private NavigationManager navigationManager { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Parameter] public NavbarBackground Background { get; set; }
     [Parameter] public NavbarDirection Direction { get; set; }
     [Parameter] public NavLinkMatch? NavLinkMatch { get; set; }
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; } = null!;
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
     [Parameter] public bool IsNavbarToggler { get; set; } = true;
 
-    protected string HtmlTag => "div";
-    public bool IsExpanded = false;
+    private string HtmlTag => "div";
+    public bool IsExpanded;
 
     private readonly List<NavbarMenuItem> navbarItems = new();
 
     protected override void OnInitialized()
     {
-        navigationManager.LocationChanged += LocationChanged;
+        NavigationManager.LocationChanged += LocationChanged;
         base.OnInitialized();
     }
 
@@ -50,7 +50,7 @@ public partial class Navbar : BaseComponent, IDisposable
 
     public void CloseAll()
     {
-        foreach (NavbarMenuItem item in navbarItems.Where(e => e.IsTopMenuItem))
+        foreach (var item in navbarItems.Where(e => e.IsTopMenuItem))
         {
             item.CloseDropdown();
         }
@@ -76,6 +76,6 @@ public partial class Navbar : BaseComponent, IDisposable
 
     public void Dispose()
     {
-        navigationManager.LocationChanged -= LocationChanged;
+        NavigationManager.LocationChanged -= LocationChanged;
     }
 }

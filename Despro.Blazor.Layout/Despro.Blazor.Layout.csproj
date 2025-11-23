@@ -9,7 +9,7 @@
 		<Description>Layout Despro Blazor</Description>
 		<Authors>Alireza Gholiei</Authors>
 		<PackageIcon>Framework.png</PackageIcon>
-		<Version>1.1.4</Version>
+		<Version>1.1.5</Version>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
