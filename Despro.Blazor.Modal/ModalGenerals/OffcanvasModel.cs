@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Despro.Blazor.Modal.ModalGenerals
+namespace Despro.Blazor.Modal.ModalGenerals;
+
+public class OffcanvasModel
 {
-    public class OffcanvasModel
-    {
-        internal TaskCompletionSource<OffcanvasResult> TaskSource { get; } = new();
-        public Task<OffcanvasResult> Task { get { return TaskSource.Task; } }
-        public string Title { get; set; }
-        public RenderFragment Contents { get; set; }
+    internal TaskCompletionSource<OffcanvasResult> TaskSource { get; } = new();
+    public Task<OffcanvasResult> Task { get { return TaskSource.Task; } }
+    public string Title { get; set; }
+    public RenderFragment Contents { get; set; }
 
-        public OffcanvasOptions Options { get; set; } = new();
+    public OffcanvasOptions Options { get; set; } = new();
 
-    }
 }

@@ -1,8 +1,7 @@
-﻿namespace Despro.Blazor.Table.TableGenerals.Table
+﻿namespace Despro.Blazor.Table.TableGenerals.Table;
+
+public enum TableEditMode
 {
-    public enum TableEditMode
-    {
-        Inline = 0,
-        Popup = 1
-    }
+    Inline = 0,
+    Popup = 1
 }

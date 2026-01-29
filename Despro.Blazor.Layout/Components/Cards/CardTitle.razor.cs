@@ -3,20 +3,19 @@ using Despro.Blazor.Base.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Despro.Blazor.Layout.Components.Cards
-{
-    public partial class CardTitle : BaseComponent
-    {
-        [Parameter] public string HtmlTag { get; set; } = "h1";
-        [Parameter] public BaseColor TextColor { get; set; } = BaseColor.Default;
-        [Parameter] public BaseColor BackgroundColor { get; set; } = BaseColor.Default;
-        [Parameter] public RenderFragment ChildContent { get; set; }
-        [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+namespace Despro.Blazor.Layout.Components.Cards;
 
-        protected override string ClassNames => ClassBuilder
-            .Add("card-title")
-            .Add(BackgroundColor.GetColorClass("bg"))
-            .Add(TextColor.GetColorClass("text"))
-            .ToString();
-    }
+public partial class CardTitle : BaseComponent
+{
+    [Parameter] public string HtmlTag { get; set; } = "h1";
+    [Parameter] public BaseColor TextColor { get; set; } = BaseColor.Default;
+    [Parameter] public BaseColor BackgroundColor { get; set; } = BaseColor.Default;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    protected override string ClassNames => ClassBuilder
+        .Add("card-title")
+        .Add(BackgroundColor.GetColorClass("bg"))
+        .Add(TextColor.GetColorClass("text"))
+        .ToString();
 }

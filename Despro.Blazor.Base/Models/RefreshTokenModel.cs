@@ -1,7 +1,6 @@
-﻿namespace Despro.Blazor.Base.Models
+﻿namespace Despro.Blazor.Base.Models;
+
+public class RefreshTokenModel
 {
-    public class RefreshTokenModel
-    {
-        public string? Token { get; set; }
-    }
+    public string? Token { get; set; }
 }

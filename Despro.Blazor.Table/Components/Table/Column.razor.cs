@@ -5,194 +5,193 @@ using Despro.Blazor.Table.TableRepository.Service.Table;
 using Microsoft.AspNetCore.Components;
 using System.Linq.Expressions;
 
-namespace Despro.Blazor.Table.Components.Table
+namespace Despro.Blazor.Table.Components.Table;
+
+public class ColumnBase<TItem> : BaseComponent, IColumn<TItem>
 {
-    public class ColumnBase<TItem> : BaseComponent, IColumn<TItem>
+    //[Inject] protected TableFilterService FilterService { get; set; }
+
+    [CascadingParameter(Name = "Table")] public ITable<TItem> Table { get; set; } = null!;
+
+    [Parameter]
+    public string Title
     {
-        //[Inject] protected TableFilterService FilterService { get; set; }
-
-        [CascadingParameter(Name = "Table")] public ITable<TItem> Table { get; set; } = null!;
-        private string? _title;
-        [Parameter]
-        public string Title
+        get
         {
-            get
-            {
-                var title = _title ?? Property.GetPropertyMemberInfo().Name;
+            var title = field ?? Property.GetPropertyMemberInfo().Name;
 
-                return title;
-            }
-            set => _title = value;
+            return title;
         }
-        [Parameter] public string CssClass { get; set; } = "";
-        [Parameter] public string Width { get; set; } = "";
-        [Parameter] public bool ActionColumn { get; set; } = false;
-        [Parameter] public bool Searchable { get; set; } = false;
-        [Parameter] public bool Groupable { get; set; } = false;
-        [Parameter] public bool Sortable { get; set; } = false;
-        [Parameter] public bool Visible { get; set; } = true;
-        [Parameter] public bool Group { get; set; } = false;
-        [Parameter] public RenderFragment<TableResult<object, TItem>> GroupingTemplate { get; set; } = null!;
-        [Parameter] public RenderFragment<TItem> EditorTemplate { get; set; } = null!;
-        [Parameter] public RenderFragment<TItem> Template { get; set; } = null!;
-        [Parameter] public RenderFragment HeaderTemplate { get; set; } = null!;
-        [Parameter] public Expression<Func<TItem, object>> Property { get; set; } = null!;
-        [Parameter] public string? SearchExpression { get; set; }
-        //[Parameter] public Expression<Func<TItem, string, bool>> SearchExpression { get; set; } = null!;
-        [Parameter] public SortOrder? Sort { get; set; }
-        [Parameter] public Align Align { get; set; }
+        set;
+    }
+    [Parameter] public string CssClass { get; set; } = "";
+    [Parameter] public string Width { get; set; } = "";
+    [Parameter] public bool ActionColumn { get; set; } = false;
+    [Parameter] public bool Searchable { get; set; } = false;
+    [Parameter] public bool Groupable { get; set; } = false;
+    [Parameter] public bool Sortable { get; set; } = false;
+    [Parameter] public bool Visible { get; set; } = true;
+    [Parameter] public bool Group { get; set; } = false;
+    [Parameter] public RenderFragment<TableResult<object, TItem>> GroupingTemplate { get; set; } = null!;
+    [Parameter] public RenderFragment<TItem> EditorTemplate { get; set; } = null!;
+    [Parameter] public RenderFragment<TItem> Template { get; set; } = null!;
+    [Parameter] public RenderFragment HeaderTemplate { get; set; } = null!;
+    [Parameter] public Expression<Func<TItem, object>> Property { get; set; } = null!;
+    [Parameter] public string? SearchExpression { get; set; }
+    //[Parameter] public Expression<Func<TItem, string, bool>> SearchExpression { get; set; } = null!;
+    [Parameter] public SortOrder? Sort { get; set; }
+    [Parameter] public Align Align { get; set; }
 
 
-        public bool SortColumn { get; set; }
-        public bool GroupBy { get; set; }
-        public bool SortDescending { get; set; }
-        public Type Type { get; private set; }
-        public string SearchText { get; set; }
+    public bool SortColumn { get; set; }
+    public bool GroupBy { get; set; }
+    public bool SortDescending { get; set; }
+    public Type Type { get; private set; }
+    public string SearchText { get; set; }
 
-        protected override void OnInitialized()
+    protected override void OnInitialized()
+    {
+        try
         {
-            try
-            {
-                GroupBy = Group;
+            GroupBy = Group;
 
-                if (Sort != null)
+            if (Sort != null)
+            {
+                SortColumn = true;
+                SortDescending = Sort == SortOrder.Descending;
+            }
+
+            Table.AddColumn(this);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        try
+        {
+            if (Sortable && Property == null || Searchable && Property == null)
+            {
+                throw new InvalidOperationException($"ستون {Title} خالی است");
+            }
+
+            if (Title == null && Property == null)
+            {
+                throw new InvalidOperationException("یک ستون دارای هر دو پارامتر عنوان و ویژگی خالی است");
+            }
+
+            if (Property == null) return;
+
+            var memberInfo = Property.GetPropertyMemberInfo();
+
+            var underlyingType = memberInfo.GetMemberUnderlyingType();
+
+            Type = underlyingType;
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            Table.RemoveColumn(this);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    private Expression<Func<TItem, bool>> NotNull()
+    {
+        try
+        {
+            return Expression.Lambda<Func<TItem, bool>>(
+                Expression.NotEqual(Property.Body, Expression.Constant(null)),
+                Property.Parameters.ToArray()
+            );
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    public async Task GroupByMeAsync()
+    {
+        try
+        {
+            if (Groupable)
+            {
+                if (GroupBy)
                 {
-                    SortColumn = true;
-                    SortDescending = Sort == SortOrder.Descending;
+                    GroupBy = false;
+                    Visible = true;
                 }
-
-                Table.AddColumn(this);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        protected override void OnParametersSet()
-        {
-            try
-            {
-                if (Sortable && Property == null || Searchable && Property == null)
+                else
                 {
-                    throw new InvalidOperationException($"ستون {Title} خالی است");
-                }
-
-                if (Title == null && Property == null)
-                {
-                    throw new InvalidOperationException("یک ستون دارای هر دو پارامتر عنوان و ویژگی خالی است");
-                }
-
-                if (Property == null) return;
-
-                var memberInfo = Property.GetPropertyMemberInfo();
-
-                var underlyingType = memberInfo.GetMemberUnderlyingType();
-
-                Type = underlyingType;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        public void Dispose()
-        {
-            try
-            {
-                Table.RemoveColumn(this);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        private Expression<Func<TItem, bool>> NotNull()
-        {
-            try
-            {
-                return Expression.Lambda<Func<TItem, bool>>(
-                    Expression.NotEqual(Property.Body, Expression.Constant(null)),
-                    Property.Parameters.ToArray()
-                );
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        public async Task GroupByMeAsync()
-        {
-            try
-            {
-                if (Groupable)
-                {
-                    if (GroupBy)
+                    foreach (var column in Table.Columns.Where(e => e.GroupBy))
                     {
-                        GroupBy = false;
-                        Visible = true;
+                        column.GroupBy = false;
+                        column.Visible = true;
                     }
-                    else
-                    {
-                        foreach (var column in Table.Columns.Where(e => e.GroupBy))
-                        {
-                            column.GroupBy = false;
-                            column.Visible = true;
-                        }
-                        GroupBy = true;
-                        Visible = false;
-                    }
-
-                    await Table.Update(true);
+                    GroupBy = true;
+                    Visible = false;
                 }
-            }
-            catch (Exception e)
-            {
-                throw e;
+
+                await Table.Update(true);
             }
         }
-
-        public async Task SortByAsync()
+        catch (Exception e)
         {
-            try
+            throw e;
+        }
+    }
+
+    public async Task SortByAsync()
+    {
+        try
+        {
+            if (Sortable)
             {
-                if (Sortable)
+                var sortOnColumn = true;
+                if (SortColumn)
                 {
-                    var sortOnColumn = true;
-                    if (SortColumn)
+                    if (SortDescending && Table.ResetSortCycle)
                     {
-                        if (SortDescending && Table.ResetSortCycle)
-                        {
-                            sortOnColumn = false;
-                        }
-                        SortDescending = !SortDescending;
+                        sortOnColumn = false;
                     }
-
-                    Table.Columns.ForEach(x => x.SortColumn = false);
-
-                    SortColumn = sortOnColumn;
-                    await Table.Update();
+                    SortDescending = !SortDescending;
                 }
-            }
-            catch (Exception e)
-            {
-                throw e;
+
+                Table.Columns.ForEach(x => x.SortColumn = false);
+
+                SortColumn = sortOnColumn;
+                await Table.Update();
             }
         }
-
-        public object GetValue(TItem item)
+        catch (Exception e)
         {
-            try
-            {
-                return Property.Compile().Invoke(item);
-            }
-            catch (NullReferenceException)
-            {
-                return null;
-            }
+            throw e;
+        }
+    }
+
+    public object GetValue(TItem item)
+    {
+        try
+        {
+            return Property.Compile().Invoke(item);
+        }
+        catch (NullReferenceException)
+        {
+            return null;
         }
     }
 }

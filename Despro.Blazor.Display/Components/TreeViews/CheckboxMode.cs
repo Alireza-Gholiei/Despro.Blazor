@@ -1,9 +1,8 @@
-﻿namespace Despro.Blazor.Display.Components.TreeViews
+﻿namespace Despro.Blazor.Display.Components.TreeViews;
+
+public enum CheckboxMode
 {
-    public enum CheckboxMode
-    {
-        None = 0,
-        Single,
-        Recursive
-    }
+    None = 0,
+    Single,
+    Recursive
 }

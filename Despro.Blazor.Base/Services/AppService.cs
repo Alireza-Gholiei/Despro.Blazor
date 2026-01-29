@@ -1,14 +1,13 @@
-﻿namespace Despro.Blazor.Base.Services
+﻿namespace Despro.Blazor.Base.Services;
+
+public class AppService
 {
-    public class AppService
+    public AppSettings Settings { get; set; } = new AppSettings();
+
+    public Action OnSettingsUpdated;
+
+    public void SettingsUpdated()
     {
-        public AppSettings Settings { get; set; } = new AppSettings();
-
-        public Action OnSettingsUpdated;
-
-        public void SettingsUpdated()
-        {
-            OnSettingsUpdated.Invoke();
-        }
+        OnSettingsUpdated.Invoke();
     }
 }

@@ -4,35 +4,34 @@ using Despro.Blazor.Base.Services;
 using Despro.Blazor.Display.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace Despro.Blazor.Display.Components.ContentViewer
+namespace Despro.Blazor.Display.Components.ContentViewer;
+
+public partial class PdfViewer : BaseComponent, IAsyncDisposable
 {
-    public partial class PdfViewer : BaseComponent, IAsyncDisposable
+    [Inject] BaseService _baseService { get; set; }
+    [Parameter] public byte[] Content { get; set; }
+    [Parameter] public DocumentContentTypes ContentType { get; set; }
+    [Parameter] public string UrlSuffix { get; set; }
+
+    private string objectURL;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        [Inject] BaseService _baseService { get; set; }
-        [Parameter] public byte[] Content { get; set; }
-        [Parameter] public DocumentContentTypes ContentType { get; set; }
-        [Parameter] public string UrlSuffix { get; set; }
-
-        private string objectURL;
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        if (Content != null && objectURL == null)
         {
-            if (Content != null && objectURL == null)
-            {
-                var _contentType = ContentType.GetDescription();
+            var _contentType = ContentType.GetDescription();
 
-                objectURL = await _baseService.CreateObjectURLAsync(_contentType, Content);
+            objectURL = await _baseService.CreateObjectURLAsync(_contentType, Content);
 
-                StateHasChanged();
-            }
+            StateHasChanged();
         }
+    }
 
-        public async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
+    {
+        if (objectURL != null)
         {
-            if (objectURL != null)
-            {
-                await _baseService.RevokeObjectURLAsync(objectURL);
-            }
+            await _baseService.RevokeObjectURLAsync(objectURL);
         }
     }
 }

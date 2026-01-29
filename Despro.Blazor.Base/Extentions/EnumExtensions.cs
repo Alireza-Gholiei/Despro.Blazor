@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace Despro.Blazor.Base.Extentions
+namespace Despro.Blazor.Base.Extentions;
+
+public static class EnumExtensions
 {
-    public static class EnumExtensions
+    public static string GetDescription(this Enum value)
     {
-        public static string GetDescription(this Enum value)
-        {
-            var field = value.GetType().GetField(value.ToString());
-            var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
-            return attribute?.Description ?? value.ToString();
-        }
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+        return attribute?.Description ?? value.ToString();
     }
 }

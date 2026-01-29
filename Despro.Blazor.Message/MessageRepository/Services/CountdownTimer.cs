@@ -1,47 +1,46 @@
 ﻿using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace Despro.Blazor.Message.MessageRepository.Services
+namespace Despro.Blazor.Message.MessageRepository.Services;
+
+internal class CountdownTimer : IDisposable
 {
-    internal class CountdownTimer : IDisposable
+    private Timer _timer;
+    private int _percentComplete;
+
+    internal Action<int> OnTick;
+
+    internal CountdownTimer(int timeout)
     {
-        private Timer _timer;
-        private int _percentComplete;
-
-        internal Action<int> OnTick;
-
-        internal CountdownTimer(int timeout)
+        _timer = new Timer(timeout)
         {
-            _timer = new Timer(timeout)
-            {
-                Interval = timeout / 100,
-                AutoReset = true
-            };
+            Interval = timeout / 100,
+            AutoReset = true
+        };
 
-            _timer.Elapsed += HandleTick;
+        _timer.Elapsed += HandleTick;
 
-            _percentComplete = 0;
-        }
+        _percentComplete = 0;
+    }
 
-        internal void Start()
+    internal void Start()
+    {
+        _timer.Start();
+    }
+
+    private void HandleTick(object sender, ElapsedEventArgs args)
+    {
+        _percentComplete += 1;
+        OnTick?.Invoke(_percentComplete);
+
+        if (_percentComplete >= 100)
         {
-            _timer.Start();
         }
+    }
 
-        private void HandleTick(object sender, ElapsedEventArgs args)
-        {
-            _percentComplete += 1;
-            OnTick?.Invoke(_percentComplete);
-
-            if (_percentComplete >= 100)
-            {
-            }
-        }
-
-        public void Dispose()
-        {
-            _timer.Dispose();
-            _timer = null;
-        }
+    public void Dispose()
+    {
+        _timer.Dispose();
+        _timer = null;
     }
 }

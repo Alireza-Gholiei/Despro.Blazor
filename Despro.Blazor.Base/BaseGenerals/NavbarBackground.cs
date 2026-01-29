@@ -1,9 +1,8 @@
-﻿namespace Despro.Blazor.Base.BaseGenerals
+﻿namespace Despro.Blazor.Base.BaseGenerals;
+
+public enum NavbarBackground
 {
-    public enum NavbarBackground
-    {
-        Light = 0,
-        Dark = 1,
-        Transparent = 2
-    }
+    Light = 0,
+    Dark = 1,
+    Transparent = 2
 }

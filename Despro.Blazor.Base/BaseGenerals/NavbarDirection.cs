@@ -1,8 +1,7 @@
-﻿namespace Despro.Blazor.Base.BaseGenerals
+﻿namespace Despro.Blazor.Base.BaseGenerals;
+
+public enum NavbarDirection
 {
-    public enum NavbarDirection
-    {
-        Horizontal,
-        Vertical
-    }
+    Horizontal,
+    Vertical
 }

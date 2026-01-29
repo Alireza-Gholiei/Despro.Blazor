@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<Title>Despro Blazor Form</Title>
 		<PackageId>Despro.Blazor.Form</PackageId>
 		<Product>Despro.Blazor.Form</Product>
@@ -9,7 +9,7 @@
 		<Description>Form Despro Blazor</Description>
 		<Authors>Alireza Gholiei</Authors>
 		<PackageIcon>Framework.png</PackageIcon>
-		<Version>1.2.8</Version>
+		<Version>1.2.9</Version>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>

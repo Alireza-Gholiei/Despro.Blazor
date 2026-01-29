@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<Title>Despro Blazor Base</Title>
 		<PackageId>Despro.Blazor.Base</PackageId>
 		<Product>Despro.Blazor.Base</Product>
@@ -8,7 +8,7 @@
 		<Description>Base Despro Blazor</Description>
 		<Authors>Alireza Gholiei</Authors>
 		<PackageIcon>Framework.png</PackageIcon>
-		<Version>1.2.6</Version>
+		<Version>1.2.7</Version>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -24,9 +24,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Mapster" Version="7.4.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
 

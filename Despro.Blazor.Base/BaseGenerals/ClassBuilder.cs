@@ -1,110 +1,109 @@
-﻿namespace Despro.Blazor.Base.BaseGenerals
+﻿namespace Despro.Blazor.Base.BaseGenerals;
+
+public class ClassBuilder
 {
-    public class ClassBuilder
+    public List<string> ClassNames = new();
+
+    public ClassBuilder(string classNames = null)
     {
-        public List<string> ClassNames = new();
-
-        public ClassBuilder(string classNames = null)
+        try
         {
-            try
-            {
-                _ = Add(classNames);
-            }
-            catch (Exception)
-            {
-
-            }
+            _ = Add(classNames);
         }
-
-        public ClassBuilder Add(string className)
+        catch (Exception)
         {
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(className))
-                {
-                    List<string> classNames = className
-                        .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Distinct()
-                        .ToList();
 
-                    foreach (string name in classNames.Where(name =>
-                        !string.IsNullOrWhiteSpace(name) && !ClassNames.Contains(name)))
-                        ClassNames.Add(name);
-                }
-
-                return this;
-            }
-            catch (Exception)
-            {
-                return this;
-            }
         }
+    }
 
-        public ClassBuilder AddIf(string className, bool isOk)
+    public ClassBuilder Add(string className)
+    {
+        try
         {
-            try
+            if (!string.IsNullOrWhiteSpace(className))
             {
-                return isOk ? Add(className) : this;
+                List<string> classNames = className
+                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Distinct()
+                    .ToList();
+
+                foreach (string name in classNames.Where(name =>
+                             !string.IsNullOrWhiteSpace(name) && !ClassNames.Contains(name)))
+                    ClassNames.Add(name);
             }
-            catch (Exception)
-            {
-                return this;
-            }
+
+            return this;
         }
-
-        public ClassBuilder AddCompare<T>(T compare, Dictionary<T, string> with)
+        catch (Exception)
         {
-            try
-            {
-                foreach (KeyValuePair<T, string> kvp in with) _ = AddCompare(kvp.Value, compare, kvp.Key);
-
-                return this;
-            }
-            catch (Exception)
-            {
-                return this;
-            }
+            return this;
         }
+    }
 
-        public ClassBuilder AddCompare<T>(string className, T compare, T with)
+    public ClassBuilder AddIf(string className, bool isOk)
+    {
+        try
         {
-            try
-            {
-                return AddIf(className, compare.Equals(with));
-            }
-            catch (Exception)
-            {
-                return this;
-            }
+            return isOk ? Add(className) : this;
         }
-
-        public ClassBuilder Remove(string className)
+        catch (Exception)
         {
-            try
-            {
-                _ = ClassNames.RemoveAll(c => c.Equals(className, StringComparison.InvariantCultureIgnoreCase));
-                return this;
-            }
-            catch (Exception)
-            {
-                return this;
-            }
+            return this;
         }
+    }
 
-        public override string ToString()
+    public ClassBuilder AddCompare<T>(T compare, Dictionary<T, string> with)
+    {
+        try
         {
-            try
-            {
-                string? result = ClassNames == null || !ClassNames.Any()
-                    ? null
-                        : string.Join(" ", ClassNames.Distinct().Where(c => !string.IsNullOrWhiteSpace(c)));
+            foreach (KeyValuePair<T, string> kvp in with) _ = AddCompare(kvp.Value, compare, kvp.Key);
 
-                return string.IsNullOrWhiteSpace(result) ? "" : result;
-            }
-            catch (Exception)
-            {
-                return "";
-            }
+            return this;
+        }
+        catch (Exception)
+        {
+            return this;
+        }
+    }
+
+    public ClassBuilder AddCompare<T>(string className, T compare, T with)
+    {
+        try
+        {
+            return AddIf(className, compare.Equals(with));
+        }
+        catch (Exception)
+        {
+            return this;
+        }
+    }
+
+    public ClassBuilder Remove(string className)
+    {
+        try
+        {
+            _ = ClassNames.RemoveAll(c => c.Equals(className, StringComparison.InvariantCultureIgnoreCase));
+            return this;
+        }
+        catch (Exception)
+        {
+            return this;
+        }
+    }
+
+    public override string ToString()
+    {
+        try
+        {
+            string? result = ClassNames == null || !ClassNames.Any()
+                ? null
+                : string.Join(" ", ClassNames.Distinct().Where(c => !string.IsNullOrWhiteSpace(c)));
+
+            return string.IsNullOrWhiteSpace(result) ? "" : result;
+        }
+        catch (Exception)
+        {
+            return "";
         }
     }
 }

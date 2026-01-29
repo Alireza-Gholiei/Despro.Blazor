@@ -1,68 +1,67 @@
 using Despro.Blazor.Base.BaseGenerals;
 using Microsoft.AspNetCore.Components;
 
-namespace Despro.Blazor.Layout.Components.Navigation
+namespace Despro.Blazor.Layout.Components.Navigation;
+
+public partial class NavigationItem : NavigationBase
 {
-    public partial class NavigationItem : NavigationBase
+    [Parameter] public string Title { get; set; }
+
+    [Parameter] public RenderFragment MenuIcon { get; set; }
+    [Parameter] public RenderFragment SubMenu { get; set; }
+    [Parameter] public object Data { get; set; }
+
+
+    private bool hasSubMenu => SubMenu != null;
+
+    protected override string ClassNames => ClassBuilder
+        .Add("nav-item")
+        .Add("cursor-pointer")
+        .AddIf("dropdown", hasSubMenu && IsExpanded)
+        .ToString();
+
+    protected string LinkCss => new ClassBuilder()
+        .Add("nav-link")
+        .AddIf("dropdown-toggle", hasSubMenu)
+        .AddIf("active", IsActive && !Disabled)
+        .AddIf("active", Disabled)
+        .ToString();
+
+
+    private void MouseEnter()
     {
-        [Parameter] public string Title { get; set; }
+        IsExpanded = true;
+    }
 
-        [Parameter] public RenderFragment MenuIcon { get; set; }
-        [Parameter] public RenderFragment SubMenu { get; set; }
-        [Parameter] public object Data { get; set; }
+    private void MouseLeave()
+    {
+        IsExpanded = false;
+    }
 
+    private void ItemClicked()
+    {
+        bool isActive;
 
-        private bool hasSubMenu => SubMenu != null;
-
-        protected override string ClassNames => ClassBuilder
-            .Add("nav-item")
-            .Add("cursor-pointer")
-            .AddIf("dropdown", hasSubMenu && IsExpanded)
-            .ToString();
-
-        protected string LinkCss => new ClassBuilder()
-            .Add("nav-link")
-             .AddIf("dropdown-toggle", hasSubMenu)
-            .AddIf("active", IsActive && !Disabled)
-            .AddIf("active", Disabled)
-            .ToString();
-
-
-        private void MouseEnter()
+        if (!ExpandClick)
         {
-            IsExpanded = true;
+            isActive = true;
+            CollapseAll();
+        }
+        else if (!hasSubMenu)
+        {
+            isActive = !IsActive;
+        }
+        else
+        {
+            IsExpanded = !IsExpanded;
+            isActive = IsExpanded;
         }
 
-        private void MouseLeave()
+        SetActive(isActive);
+
+        if (isActive)
         {
-            IsExpanded = false;
-        }
-
-        private void ItemClicked()
-        {
-            bool isActive;
-
-            if (!ExpandClick)
-            {
-                isActive = true;
-                CollapseAll();
-            }
-            else if (!hasSubMenu)
-            {
-                isActive = !IsActive;
-            }
-            else
-            {
-                IsExpanded = !IsExpanded;
-                isActive = IsExpanded;
-            }
-
-            SetActive(isActive);
-
-            if (isActive)
-            {
-                ChildSelected(this);
-            }
+            ChildSelected(this);
         }
     }
 }
