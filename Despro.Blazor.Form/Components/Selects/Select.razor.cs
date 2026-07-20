@@ -45,8 +45,34 @@ public partial class Select<TItem, TValue> : BaseComponent
         ConvertExpression = item => item is TValue value ? value : default!;
     }
 
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    PopulateItemList();
+
+    //    if (!EqualityComparer<TValue>.Default.Equals(_previousValue, SelectedValue))
+    //    {
+    //        _previousValue = SelectedValue;
+
+    //        if (!ItemNotInList())
+    //        {
+    //            await SelectedValueChanged.InvokeAsync(SelectedValue);
+    //            await Updated.InvokeAsync(SelectedValue);
+    //            NotifyFieldChanged();
+    //        }
+    //    }
+    //}
+
     protected override async Task OnParametersSetAsync()
     {
+        if (For != null && EditContext != null)
+        {
+            _fieldIdentifier = FieldIdentifier.Create(For);
+        }
+        else
+        {
+            _fieldIdentifier = default;
+        }
+
         PopulateItemList();
 
         if (!EqualityComparer<TValue>.Default.Equals(_previousValue, SelectedValue))
@@ -118,13 +144,23 @@ public partial class Select<TItem, TValue> : BaseComponent
         NotifyFieldChanged();
     }
 
+    //private void NotifyFieldChanged()
+    //{
+    //    if (EditContext != null && For != null)
+    //        EditContext.NotifyFieldChanged(_fieldIdentifier);
+    //}
+
     private void NotifyFieldChanged()
     {
-        if (EditContext != null && For != null)
+        if (EditContext != null && !string.IsNullOrEmpty(_fieldIdentifier.FieldName))
             EditContext.NotifyFieldChanged(_fieldIdentifier);
     }
 
-    private bool HasError => EditContext?.GetValidationMessages(_fieldIdentifier).Any() ?? false;
+    //private bool HasError => EditContext?.GetValidationMessages(_fieldIdentifier).Any() ?? false;
+    private bool HasError =>
+        EditContext != null &&
+        !string.IsNullOrEmpty(_fieldIdentifier.FieldName) &&
+        EditContext.GetValidationMessages(_fieldIdentifier).Any();
 
     protected override string ClassNames => ClassBuilder
         .Add("form-control form-select")
