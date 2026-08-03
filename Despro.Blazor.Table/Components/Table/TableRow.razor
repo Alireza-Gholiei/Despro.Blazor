@@ -7,7 +7,7 @@
 @if (IsSearch)
 {
     var i = 2;
-    @foreach (IColumn<TTableItem> column in Table.VisibleColumns)
+    @foreach (var column in Table.VisibleColumns)
     {
         var j = i;
         <td data-label="@column.Title" style="@GetColumnWidth(column)" class="@GetColumnClass(column)"
@@ -41,7 +41,7 @@ else
 
         @{
             var i = 2;
-            @foreach (IColumn<TTableItem> column in Table.VisibleColumns)
+            @foreach (var column in Table.VisibleColumns)
             {
                 var j = i;
                 <td data-label="@column.Title" style="@GetColumnWidth(column)" class="@GetColumnClass(column)"

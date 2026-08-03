@@ -56,8 +56,8 @@ public class TableBase<TItem> : BaseComponent, IPopupEditTable<TItem>, ITable<TI
     public IList<TItem> CurrentItems => Items.Data ?? TempItems?.FirstOrDefault();
     protected IEnumerable<TableResult<object, TItem>> TempItems { get; set; } = new List<TableResult<object, TItem>>();
     protected IDictionary<string, object> Attributes { get; set; }
-    public List<IColumn<TItem>> Columns { get; } = new();
-    public List<IColumn<TItem>> SearchColumns { get; } = new();
+    public List<IColumn<TItem>> Columns { get; } = [];
+    public List<IColumn<TItem>> SearchColumns { get; } = [];
     public List<IColumn<TItem>> VisibleColumns => Columns.Where(x => x.Visible).ToList();
     protected ElementReference Table { get; set; }
 
@@ -103,8 +103,8 @@ public class TableBase<TItem> : BaseComponent, IPopupEditTable<TItem>, ITable<TI
         if (CurrentItems == null || !CurrentItems.Any()) return;
         if (SelectAllStrategy == SelectAllStrategy.AllPages)
         {
-            int currentPageNumber = Items.CurrentPage;
-            int currentPageSize = Items.Limit;
+            var currentPageNumber = Items.CurrentPage;
+            var currentPageSize = Items.Limit;
             Items.CurrentPage = 0;
             Items.Limit = int.MaxValue;
             SelectedItems = DataProvider.GetData(Columns, Columns.FirstOrDefault(x => x.SortColumn), this, null).Result.First();
@@ -222,13 +222,13 @@ public class TableBase<TItem> : BaseComponent, IPopupEditTable<TItem>, ITable<TI
 
     public string GetColumnWidth()
     {
-        int width = 16;
+        var width = 16;
         return Math.Max(width, 80) + "px";
     }
 
     public async Task SetSelectedItem(TItem item)
     {
-        SelectedItems ??= new List<TItem>();
+        SelectedItems ??= [];
 
         if (IsSelected(item))
         {
@@ -294,7 +294,7 @@ public class TableBase<TItem> : BaseComponent, IPopupEditTable<TItem>, ITable<TI
             {"class", TableClass}
         };
 
-        if (UnmatchedParameters?.TryGetValue("class", out object parameter) is true)
+        if (UnmatchedParameters?.TryGetValue("class", out var parameter) is true)
         {
             baseAttributes["class"] = TableClass + " " + parameter;
             //var dictionary = baseAttributes.Union(UnknownParameters.Where(x => x.Key != "class")).ToDictionary(x => x.Key, x => x.Value);

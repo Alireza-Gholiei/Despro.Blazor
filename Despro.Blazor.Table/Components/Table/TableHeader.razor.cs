@@ -21,20 +21,20 @@ public class TableHeaderBase<TableItem> : TableRowComponentBase<TableItem>
 
     protected string GetSortIconClass(IColumn<TableItem> column)
     {
-        return !column.SortColumn && column.Sortable
+        return column is { SortColumn: false, Sortable: true }
             ? "sorting"
-            : column.SortColumn && column.SortDescending
+            : column is { SortColumn: true, SortDescending: true }
                 ? "sorting_desc"
-                : column.SortColumn && !column.SortDescending ? "sorting_desc" : string.Empty;
+                : column is { SortColumn: true, SortDescending: false } ? "sorting_desc" : string.Empty;
     }
 
     protected IIconType GetSortIcon(IColumn<TableItem> column)
     {
-        return !column.SortColumn && column.Sortable
+        return column is { SortColumn: false, Sortable: true }
             ? InternalIcons.Sortable
-            : column.SortColumn && column.SortDescending
+            : column is { SortColumn: true, SortDescending: true }
                 ? InternalIcons.Sort_Desc
-                : column.SortColumn && !column.SortDescending ? InternalIcons.Sort_Asc : null;
+                : column is { SortColumn: true, SortDescending: false } ? InternalIcons.Sort_Asc : null;
     }
 
     protected bool? SelectedValue()
@@ -48,7 +48,7 @@ public class TableHeaderBase<TableItem> : TableRowComponentBase<TableItem>
 
     protected void ToggleSelected(bool? value)
     {
-        bool? selected = SelectedValue();
+        var selected = SelectedValue();
         _ = selected != true ? Table.SelectAll() : Table.UnSelectAll();
     }
 }

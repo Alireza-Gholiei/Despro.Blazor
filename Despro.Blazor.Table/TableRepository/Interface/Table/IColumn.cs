@@ -23,6 +23,7 @@ public interface IColumn<Item>
     Type Type { get; }
     Expression<Func<Item, object>> Property { get; }
     string? SearchExpression { get; }
+    string? SortExpression { get; }
     object GetValue(Item item);
     RenderFragment HeaderTemplate { get; set; }
     RenderFragment<Item> EditorTemplate { get; set; }

@@ -75,7 +75,7 @@ public partial class Form : BaseComponent
     {
         if (RenderForm)
         {
-            bool valid = await ValidateAsync();
+            var valid = await ValidateAsync();
             OnAfterModelValidation(valid);
         }
     }
@@ -93,7 +93,7 @@ public partial class Form : BaseComponent
 
     public async Task<bool> ValidateAsync()
     {
-        bool valid = await Validator.ValidateAsync(ValidatorInstance?.Instance, EditContext);
+        var valid = await Validator.ValidateAsync(ValidatorInstance?.Instance, EditContext);
         OnAfterModelValidation(valid);
 
         return IsValid;
@@ -101,7 +101,7 @@ public partial class Form : BaseComponent
 
     public bool Validate()
     {
-        bool valid = Validator.Validate(ValidatorInstance.Instance, EditContext);
+        var valid = Validator.Validate(ValidatorInstance.Instance, EditContext);
         OnAfterModelValidation(valid);
 
         return IsValid;

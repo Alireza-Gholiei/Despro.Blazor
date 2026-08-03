@@ -48,9 +48,9 @@ internal class ModalService : IModalService, IDisposable
 
     public async Task<bool> ShowDialogAsync(DialogOptions options)
     {
-        RenderComponent<DialogModal> component = new RenderComponent<DialogModal>().
+        var component = new RenderComponent<DialogModal>().
             Set(e => e.Options, options);
-        ModalResult result = await ShowAsync("", component, new ModalOptions { ModalBodyCssClass = "p-0", Size = ModalSize.Small, ShowHeader = false, StatusColor = options.StatusColor });
+        var result = await ShowAsync("", component, new ModalOptions { ModalBodyCssClass = "p-0", Size = ModalSize.Small, ShowHeader = false, StatusColor = options.StatusColor });
         return !result.Cancelled;
     }
 
@@ -61,7 +61,7 @@ internal class ModalService : IModalService, IDisposable
 
     private void CloseAll()
     {
-        foreach (ModalModel x in _modals.ToList())
+        foreach (var x in _modals.ToList())
         {
             Close();
         }
@@ -71,7 +71,7 @@ internal class ModalService : IModalService, IDisposable
     {
         if (_modals.Any())
         {
-            ModalModel modalToClose = _modals.Pop();
+            var modalToClose = _modals.Pop();
             modalToClose.TaskSource.SetResult(modalResult);
         }
 
@@ -85,7 +85,7 @@ internal class ModalService : IModalService, IDisposable
 
     public void UpdateTitle(string title)
     {
-        ModalModel modal = Modals.LastOrDefault();
+        var modal = Modals.LastOrDefault();
         if (modal != null)
         {
             modal.Title = title;
@@ -95,7 +95,7 @@ internal class ModalService : IModalService, IDisposable
 
     public void Refresh()
     {
-        ModalModel modal = Modals.LastOrDefault();
+        var modal = Modals.LastOrDefault();
         if (modal != null)
         {
             OnChanged?.Invoke();

@@ -62,7 +62,7 @@ public partial class DropdownItem : BaseComponent, IDisposable
 
     private void ToogleSubMenus(MouseEventArgs e)
     {
-        bool visible = subMenuVisible;
+        var visible = subMenuVisible;
         ParentMenu?.CloseAllSubMenus();
 
         subMenuVisible = !visible;

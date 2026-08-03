@@ -50,14 +50,14 @@ public partial class NavbarMenuItem : BaseComponent, IDisposable
 
         if (Navbar.NavLinkMatch == null) { return false; }
 
-        NavLinkMatch navLinkMatch = (NavLinkMatch)Navbar.NavLinkMatch;
+        var navLinkMatch = (NavLinkMatch)Navbar.NavLinkMatch;
 
-        string relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri).ToLower();
+        var relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri).ToLower();
         return navLinkMatch == NavLinkMatch.All ? relativePath == Href.ToLower() : relativePath.StartsWith(Href.ToLower());
     }
 
 
-    private bool NavbarIsHorizontalAndDark => Navbar?.Background == NavbarBackground.Dark && Navbar?.Direction == NavbarDirection.Horizontal;
+    private bool NavbarIsHorizontalAndDark => Navbar is { Background: NavbarBackground.Dark, Direction: NavbarDirection.Horizontal };
 
     private bool IsDropEnd => Navbar.Direction == NavbarDirection.Horizontal && ParentMenuItem?.IsDropdown == true;
 
@@ -76,7 +76,7 @@ public partial class NavbarMenuItem : BaseComponent, IDisposable
 
     public void ToogleDropdown()
     {
-        bool expand = !IsExpanded;
+        var expand = !IsExpanded;
 
         if (expand && IsTopMenuItem)
         {

@@ -7,7 +7,7 @@ public class BaseService(IJSRuntime jSRuntime)
 {
     public async Task SetTheme(bool darkTheme)
     {
-        string theme = "";
+        var theme = "";
         if (darkTheme)
         {
             theme = "dark";

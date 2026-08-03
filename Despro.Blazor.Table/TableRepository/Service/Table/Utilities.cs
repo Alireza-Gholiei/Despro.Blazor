@@ -67,7 +67,7 @@ internal static class Utilities
 
             if (!(expression.Body is MemberExpression body))
             {
-                UnaryExpression ubody = (UnaryExpression)expression.Body;
+                var ubody = (UnaryExpression)expression.Body;
                 body = ubody.Operand as MemberExpression;
             }
 

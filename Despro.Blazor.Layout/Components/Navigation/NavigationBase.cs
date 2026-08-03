@@ -10,7 +10,7 @@ public abstract class NavigationBase : BaseComponent, IDisposable
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-    internal List<NavigationBase> Children { get; set; } = new();
+    internal List<NavigationBase> Children { get; set; } = [];
     public NavigationItem SelectedItem { get; set; }
 
     internal bool IsExpanded;
@@ -56,7 +56,7 @@ public abstract class NavigationBase : BaseComponent, IDisposable
         }
         else
         {
-            foreach (NavigationBase child in Children)
+            foreach (var child in Children)
             {
 
                 child.SetExpanded(false);
@@ -73,7 +73,7 @@ public abstract class NavigationBase : BaseComponent, IDisposable
         {
             if (active)
             {
-                foreach (NavigationBase child in Parent.Children)
+                foreach (var child in Parent.Children)
                 {
                     if (child != this)
                     {

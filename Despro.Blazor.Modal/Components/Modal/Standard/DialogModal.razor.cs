@@ -15,7 +15,7 @@ public partial class DialogModal : BaseComponent
 
     protected override void OnInitialized()
     {
-        string[] newLineArray = { Environment.NewLine };
+        string[] newLineArray = [Environment.NewLine];
         textArray = Options.SubText.Split(newLineArray, StringSplitOptions.None);
         _ = Options.SubText.Split(Environment.NewLine.ToArray(), StringSplitOptions.None);
     }

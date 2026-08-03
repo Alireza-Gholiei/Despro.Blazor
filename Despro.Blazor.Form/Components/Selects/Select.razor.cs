@@ -26,7 +26,7 @@ public partial class Select<TItem, TValue> : BaseComponent
     [Parameter] public string NoSelectedText { get; set; } = "*انتخاب مورد*";
     [Parameter] public bool Clearable { get; set; } = true;
 
-    private List<ListItem<TItem, TValue>> ItemList = new();
+    private List<ListItem<TItem, TValue>> ItemList = [];
     private TValue _previousValue;
     private FieldIdentifier _fieldIdentifier;
 

@@ -38,7 +38,7 @@ public class ColumnBase<TItem> : BaseComponent, IColumn<TItem>
     [Parameter] public RenderFragment HeaderTemplate { get; set; } = null!;
     [Parameter] public Expression<Func<TItem, object>> Property { get; set; } = null!;
     [Parameter] public string? SearchExpression { get; set; }
-    //[Parameter] public Expression<Func<TItem, string, bool>> SearchExpression { get; set; } = null!;
+    [Parameter] public string? SortExpression { get; set; }
     [Parameter] public SortOrder? Sort { get; set; }
     [Parameter] public Align Align { get; set; }
 

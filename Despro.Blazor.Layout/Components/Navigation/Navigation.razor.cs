@@ -37,7 +37,7 @@ public partial class Navigation : NavigationBase
     private void OnClickOutside()
     {
 
-        foreach (NavigationBase child in Children)
+        foreach (var child in Children)
         {
             child.SetExpanded(false);
         }

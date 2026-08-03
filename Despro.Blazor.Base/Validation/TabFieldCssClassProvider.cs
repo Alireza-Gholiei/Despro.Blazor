@@ -6,8 +6,8 @@ public class TabFieldCssClassProvider : FieldCssClassProvider
 {
     public override string GetFieldCssClass(EditContext editContext, in FieldIdentifier fieldIdentifier)
     {
-        bool isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
-        bool isModified = editContext.IsModified(fieldIdentifier);
+        var isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
+        var isModified = editContext.IsModified(fieldIdentifier);
         return isModified ? isValid ? "is-valid" : "is-invalid" : !isValid ? "is-invalid" : "";
     }
 }

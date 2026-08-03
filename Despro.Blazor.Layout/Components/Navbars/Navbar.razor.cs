@@ -19,7 +19,7 @@ public partial class Navbar : BaseComponent, IDisposable
     private string HtmlTag => "div";
     public bool IsExpanded;
 
-    private readonly List<NavbarMenuItem> navbarItems = new();
+    private readonly List<NavbarMenuItem> navbarItems = [];
 
     protected override void OnInitialized()
     {

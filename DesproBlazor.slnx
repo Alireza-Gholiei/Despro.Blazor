@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Despro.Blazor.Base/Despro.Blazor.Base.csproj" />
+  <Project Path="Despro.Blazor.Display/Despro.Blazor.Display.csproj" />
+  <Project Path="Despro.Blazor.Form/Despro.Blazor.Form.csproj" />
+  <Project Path="Despro.Blazor.Layout/Despro.Blazor.Layout.csproj" />
+  <Project Path="Despro.Blazor.Message/Despro.Blazor.Message.csproj" />
+  <Project Path="Despro.Blazor.Modal/Despro.Blazor.Modal.csproj" />
+  <Project Path="Despro.Blazor.Table/Despro.Blazor.Table.csproj" />
+</Solution>

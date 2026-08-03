@@ -45,7 +45,7 @@ public partial class Badge : BaseComponent
     {
         get
         {
-            ClassBuilder builder = ClassBuilder;
+            var builder = ClassBuilder;
 
             builder = builder
                 .Add("badge")

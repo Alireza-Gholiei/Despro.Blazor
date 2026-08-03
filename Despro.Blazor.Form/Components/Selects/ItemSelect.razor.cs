@@ -70,13 +70,13 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
 
     private bool showSearch => SearchMethod != null;
     private bool singleSelect => MaxSelectableItems == 1 || !MultiSelect;
-    private List<TItem> selectedItems = new();
+    private List<TItem> selectedItems = [];
     private Dropdown dropdown;
     private string searchText;
     private TItem highlighted;
     private FieldIdentifier? fieldIdentifier;
     private string FieldCssClasses;
-    private readonly string[] ExpandKeys = { "Enter", " ", "ArrowDown" };
+    private readonly string[] ExpandKeys = ["Enter", " ", "ArrowDown"];
 
     protected override void OnInitialized()
     {
@@ -130,7 +130,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
     {
         if (selectedItems == null)
         {
-            selectedItems = new List<TItem>();
+            selectedItems = [];
         }
 
         selectedItems.Clear();
@@ -144,7 +144,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
             }
             else
             {
-                foreach (TValue selectedValue in SelectedValues)
+                foreach (var selectedValue in SelectedValues)
                 {
                     AddSelectItemFromValue(selectedValue);
                 }
@@ -175,11 +175,11 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
 
     private string GetListStyle()
     {
-        string style = "";
+        var style = "";
 
         if (!string.IsNullOrWhiteSpace(MaxListHeight))
         {
-            string overFlowStyle = isFirefoxBrowser ? "overflow-y:scroll;" : "overflow-y:overlay;";
+            var overFlowStyle = isFirefoxBrowser ? "overflow-y:scroll;" : "overflow-y:overlay;";
             style = $"max-height:{MaxListHeight}; {overFlowStyle}";
         }
 
@@ -193,7 +193,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
 
     private void AddSelectItemFromValue(TValue value)
     {
-        TItem item = Items.FirstOrDefault(e => EqualityComparer<TValue>.Default.Equals(ConvertExpression(e), value));
+        var item = Items.FirstOrDefault(e => EqualityComparer<TValue>.Default.Equals(ConvertExpression(e), value));
         if (item != null)
         {
             selectedItems.Add(item);
@@ -202,7 +202,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
 
     protected List<TItem> FilteredList()
     {
-        IEnumerable<TItem> filtered = Items;
+        var filtered = Items;
         if (SearchMethod != null && !string.IsNullOrWhiteSpace(searchText))
         {
             filtered = SearchMethod(searchText).ToList();
@@ -261,7 +261,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
 
     private void SetHighlighted(int step)
     {
-        List<TItem> myList = FilteredList();
+        var myList = FilteredList();
 
         if (highlighted == null)
         {
@@ -269,7 +269,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
         }
         else
         {
-            int pos = myList.IndexOf(highlighted);
+            var pos = myList.IndexOf(highlighted);
             pos += step;
             highlighted = myList.ElementAtOrDefault(pos);
 
@@ -363,7 +363,7 @@ public partial class ItemSelect<TItem, TValue> : BaseComponent, IDisposable
 
     private async Task UpdateChanged()
     {
-        List<TValue> selectedValues = new();
+        List<TValue> selectedValues = [];
         selectedValues = selectedItems.Select(GetValue).ToList();
         await SelectedValuesChanged.InvokeAsync(selectedValues);
 

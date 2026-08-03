@@ -16,7 +16,7 @@ public partial class DropdownMenu : BaseComponent, IDisposable
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
 
-    private readonly List<DropdownItem> subMenuItems = new();
+    private readonly List<DropdownItem> subMenuItems = [];
 
     protected override string ClassNames => ClassBuilder
         .Add("dropdown-menu")
@@ -29,7 +29,7 @@ public partial class DropdownMenu : BaseComponent, IDisposable
 
     public void CloseAllSubMenus()
     {
-        foreach (DropdownItem item in subMenuItems)
+        foreach (var item in subMenuItems)
         {
             item.CloseSubMenu();
         }

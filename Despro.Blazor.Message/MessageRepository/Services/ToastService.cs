@@ -22,7 +22,7 @@ public class ToastService : IToastService, IDisposable
     public IEnumerable<ToastModel> Toasts => _toasts;
     public event Func<Task> OnChanged;
 
-    private readonly List<ToastModel> _toasts = new();
+    private readonly List<ToastModel> _toasts = [];
     private readonly ReaderWriterLockSlim _listLock = new();
 
     #region Tools

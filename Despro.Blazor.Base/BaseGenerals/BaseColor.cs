@@ -38,7 +38,7 @@ public static class ColorsExtensions
     public static string GetColorClass(this BaseColor color, string type,
         ColorType colorType = ColorType.Default, string suffix = "")
     {
-        string colorClass = $"{type}";
+        var colorClass = $"{type}";
 
         colorClass += colorType switch
         {

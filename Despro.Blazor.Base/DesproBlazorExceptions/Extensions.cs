@@ -14,9 +14,9 @@ public static class Extensions
     /// <example><![CDATA[string desc = myEnumVariable.GetAttributeOfType<DescriptionAttribute>().Description;]]></example>
     public static T GetAttributeOfType<T>(this Enum enumVal) where T : Attribute
     {
-        Type type = enumVal.GetType();
-        System.Reflection.MemberInfo[] memInfo = type.GetMember(enumVal.ToString());
-        object[] attributes = memInfo[0].GetCustomAttributes(typeof(T), false);
+        var type = enumVal.GetType();
+        var memInfo = type.GetMember(enumVal.ToString());
+        var attributes = memInfo[0].GetCustomAttributes(typeof(T), false);
         return attributes.Length > 0 ? (T)attributes[0] : null;
     }
 

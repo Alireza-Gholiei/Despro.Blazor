@@ -13,27 +13,20 @@ public class HtmlElement : BaseComponent
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        try
+        base.BuildRenderTree(builder);
+
+        var seq = 0;
+
+        UnmatchedParameters = UnmatchedParameters.Where(x => x.Value != null).ToDictionary();
+
+        builder.OpenElement(seq++, Tag);
+        builder.AddMultipleAttributes(seq++, UnmatchedParameters);
+        builder.AddElementReferenceCapture(seq++, reference =>
         {
-            base.BuildRenderTree(builder);
-
-            var seq = 0;
-
-            UnmatchedParameters = UnmatchedParameters.Where(x => x.Value != null).ToDictionary();
-
-            builder.OpenElement(seq++, Tag);
-            builder.AddMultipleAttributes(seq++, UnmatchedParameters);
-            builder.AddElementReferenceCapture(seq++, reference =>
-            {
-                ElementRef = reference;
-                ElementRefChanged?.Invoke(ElementRef);
-            });
-            builder.AddContent(seq++, ChildContent);
-            builder.CloseElement();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+            ElementRef = reference;
+            ElementRefChanged?.Invoke(ElementRef);
+        });
+        builder.AddContent(seq++, ChildContent);
+        builder.CloseElement();
     }
 }

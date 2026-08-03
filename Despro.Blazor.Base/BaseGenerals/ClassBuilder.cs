@@ -2,7 +2,7 @@
 
 public class ClassBuilder
 {
-    public List<string> ClassNames = new();
+    public List<string> ClassNames = [];
 
     public ClassBuilder(string classNames = null)
     {
@@ -22,12 +22,12 @@ public class ClassBuilder
         {
             if (!string.IsNullOrWhiteSpace(className))
             {
-                List<string> classNames = className
-                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                var classNames = className
+                    .Split([' '], StringSplitOptions.RemoveEmptyEntries)
                     .Distinct()
                     .ToList();
 
-                foreach (string name in classNames.Where(name =>
+                foreach (var name in classNames.Where(name =>
                              !string.IsNullOrWhiteSpace(name) && !ClassNames.Contains(name)))
                     ClassNames.Add(name);
             }
@@ -56,7 +56,7 @@ public class ClassBuilder
     {
         try
         {
-            foreach (KeyValuePair<T, string> kvp in with) _ = AddCompare(kvp.Value, compare, kvp.Key);
+            foreach (var kvp in with) _ = AddCompare(kvp.Value, compare, kvp.Key);
 
             return this;
         }
@@ -95,7 +95,7 @@ public class ClassBuilder
     {
         try
         {
-            string? result = ClassNames == null || !ClassNames.Any()
+            var result = ClassNames == null || !ClassNames.Any()
                 ? null
                 : string.Join(" ", ClassNames.Distinct().Where(c => !string.IsNullOrWhiteSpace(c)));
 

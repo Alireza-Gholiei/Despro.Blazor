@@ -12,7 +12,7 @@ public class GeneratedIcon
 
     public string GetSafeName()
     {
-        string safeName = Name;
+        var safeName = Name;
         safeName = safeName.Replace("-", "_");
         safeName = char.IsDigit(safeName.ToCharArray().First()) ? "_" + safeName : FirstCharacterToUpperCase(safeName);
 

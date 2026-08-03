@@ -9,18 +9,16 @@ public static class DatePersian
     {
         public static void InitializePersianCulture()
         {
-            InitializeCulture("fa-ir", new[] { "ی", "د", "س", "چ", "پ", "ج", "ش" },
-                new[] { "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه" },
-                new[]
-                {
+            InitializeCulture("fa-ir", ["ی", "د", "س", "چ", "پ", "ج", "ش"],
+                ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
+                [
                     "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی",
                     "بهمن", "اسفند", ""
-                },
-                new[]
-                {
+                ],
+                [
                     "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی",
                     "بهمن", "اسفند", ""
-                }, "ق.ظ. ", "ب.ظ. ", "yyyy/MM/dd", new PersianCalendar());
+                ], "ق.ظ. ", "ب.ظ. ", "yyyy/MM/dd", new PersianCalendar());
         }
 
         public static void InitializeCulture(string culture, string[] abbreviatedDayNames, string[] dayNames,
@@ -28,7 +26,7 @@ public static class DatePersian
             string pmDesignator, string shortDatePattern, Calendar calendar)
         {
             CultureInfo calture = new(culture);
-            DateTimeFormatInfo info = calture.DateTimeFormat;
+            var info = calture.DateTimeFormat;
             info.AbbreviatedDayNames = abbreviatedDayNames;
             //info.DayNames = dayNames;
             info.AbbreviatedMonthNames = abbreviatedMonthNames;
@@ -37,11 +35,11 @@ public static class DatePersian
             info.PMDesignator = pmDesignator;
             info.ShortDatePattern = shortDatePattern;
             info.FirstDayOfWeek = DayOfWeek.Saturday;
-            Calendar cal = calendar;
-            Type type = typeof(DateTimeFormatInfo);
-            FieldInfo fieldInfo = type.GetField("calendar", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            var cal = calendar;
+            var type = typeof(DateTimeFormatInfo);
+            var fieldInfo = type.GetField("calendar", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             fieldInfo?.SetValue(info, cal);
-            FieldInfo field = typeof(CultureInfo).GetField("calendar", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            var field = typeof(CultureInfo).GetField("calendar", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             field?.SetValue(calture, cal);
             Thread.CurrentThread.CurrentCulture = calture;
             Thread.CurrentThread.CurrentUICulture = calture;
@@ -72,7 +70,7 @@ public class PersianCulture : CultureInfo
             new GregorianCalendar()
         }.ToArray();
 
-        DateTimeFormatInfo dateTimeFormatInfo = CreateSpecificCulture("fa-IR").DateTimeFormat;
+        var dateTimeFormatInfo = CreateSpecificCulture("fa-IR").DateTimeFormat;
         dateTimeFormatInfo.Calendar = _calendar;
         _dateTimeFormatInfo = dateTimeFormatInfo;
     }
